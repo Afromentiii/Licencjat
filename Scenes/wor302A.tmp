@@ -1,4 +1,4 @@
-[gd_scene load_steps=107 format=3 uid="uid://ckdilewqbmj74"]
+[gd_scene load_steps=108 format=3 uid="uid://ckdilewqbmj74"]
 
 [ext_resource type="Script" path="res://Scenes/world.gd" id="1_8j4bf"]
 [ext_resource type="Texture2D" uid="uid://de64io67hpiip" path="res://Images/TileMap/TX Tileset Ground.png" id="1_woyg2"]
@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://d1raj3l4p0v5n" path="res://Images/left.png" id="9_tou8d"]
 [ext_resource type="Script" path="res://Scripts/Area2D.gd" id="10_7631r"]
 [ext_resource type="Script" path="res://Scenes/Lava.gd" id="13_pasjr"]
+[ext_resource type="PackedScene" uid="uid://b7e58isnsj31u" path="res://move.tscn" id="14_grax4"]
 [ext_resource type="Texture2D" uid="uid://b7vcev0n1u5oy" path="res://Scripts/platform.png" id="14_owr7r"]
 [ext_resource type="Script" path="res://Scenes/Area2D.gd" id="17_dpqrb"]
 [ext_resource type="Texture2D" uid="uid://cx0crvp7jt0tn" path="res://Scripts/Trampolina2.png" id="19_5b7b6"]
@@ -2179,11 +2180,9 @@ var firstMoves : bool = false;
 var firstMovesIndex = 0;
 
 func executeMove(move : int):
-	var moveScene = preload(\"res://move.tscn\").instantiate()
-	moveScene.get_node(\"Timer\").move = move
-	moveScene.get_node(\"Timer\").positionBeforeMove = self.position.x
-	moveScene.get_node(\"Timer\").player = self
-	self.add_child(moveScene)
+	$Move/Timer.move = move
+	$Move/Timer.positionBeforeMove = self.position.x
+	$Move/Timer.player = self
 
 func saveMoves():
 	var conf = FileAccess.open(\"res://Scenes/Moves/conf.txt\", FileAccess.READ_WRITE)
@@ -2225,7 +2224,6 @@ func feedback(positionBeforeMove : int) -> int:
 	return 0
 
 func validation(feedback : int, move : int):
-	print(feedback)
 	if feedback == 1:
 		move_Array.append(move)
 	else:
@@ -2277,8 +2275,7 @@ func _physics_process(delta):
 			firstMoves = false
 			firstMovesIndex = 0
 	else:
-		pass
-		#learning()
+		learning()
 
 	if not is_on_floor():
 		velocity.y += gravity * delta
@@ -2871,6 +2868,8 @@ offset_right = 13.0
 offset_bottom = -13.0
 value = 100.0
 show_percentage = false
+
+[node name="Move" parent="Player" instance=ExtResource("14_grax4")]
 
 [node name="ColorRect" type="ColorRect" parent="."]
 show_behind_parent = true

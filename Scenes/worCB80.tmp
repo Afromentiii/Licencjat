@@ -2162,6 +2162,8 @@ outline_color = Color(0, 0, 0, 1)
 [sub_resource type="GDScript" id="GDScript_5cbp6"]
 script/source = "extends CharacterBody2D
 
+
+
 const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
 
@@ -2186,16 +2188,10 @@ func executeMove(move : int):
 	self.add_child(moveScene)
 
 func saveMoves():
-	var conf = FileAccess.open(\"res://Scenes/Moves/conf.txt\", FileAccess.READ_WRITE)
-	
-	iter += 1
-	conf.store_string(str(iter))
-	conf.close()
-	
 	var fileToCreate = FileAccess.open(\"res://Scenes/Moves/iter\" + str(iter) + \".txt\", FileAccess.WRITE)
-	for i in move_Array:
-		fileToCreate.store_string(str(i) + \" \")
+	fileToCreate.store_string(str(move_Array))
 	fileToCreate.close()
+	firstMoves = true
 	move_Array.clear()
 
 func loadMoves():
@@ -2206,14 +2202,14 @@ func loadMoves():
 	for i in elements:
 		move_Array.append(int(i))
 	file.close()
-	print(str(move_Array) + \"\\n\")
-	firstMoves = true
 
 func _ready():
 	var file = FileAccess.open(\"res://Scenes/Moves/conf.txt\", FileAccess.READ_WRITE)
 	iter = int(file.get_as_text())
+	
 	if iter > 0:
 		loadMoves()
+		firstMoves = true
 	file.close()
 
 func feedback(positionBeforeMove : int) -> int:
@@ -2225,11 +2221,8 @@ func feedback(positionBeforeMove : int) -> int:
 	return 0
 
 func validation(feedback : int, move : int):
-	print(feedback)
 	if feedback == 1:
 		move_Array.append(move)
-	else:
-		pass
 
 func learning():
 	randomMove = randi() % 3
@@ -2259,6 +2252,12 @@ func hugeJump() -> void:
 
 func respawn() -> void:
 	self.position = respawnPosition
+	var conf = FileAccess.open(\"res://Scenes/Moves/conf.txt\", FileAccess.READ_WRITE)
+	
+	iter += 1
+	conf.store_string(str(iter))
+	conf.close()
+	
 	saveMoves()
 	loadMoves()
 func spike_dmg() -> void:
@@ -2272,13 +2271,10 @@ func lava_dmg() -> void:
 func _physics_process(delta):
 	if firstMoves == true:
 		executeMove(move_Array[firstMovesIndex])
-		firstMovesIndex += 1
 		if firstMovesIndex == len(move_Array):
 			firstMoves = false
-			firstMovesIndex = 0
 	else:
-		pass
-		#learning()
+		learning()
 
 	if not is_on_floor():
 		velocity.y += gravity * delta

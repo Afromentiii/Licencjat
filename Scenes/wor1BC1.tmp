@@ -2162,6 +2162,8 @@ outline_color = Color(0, 0, 0, 1)
 [sub_resource type="GDScript" id="GDScript_5cbp6"]
 script/source = "extends CharacterBody2D
 
+
+
 const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
 
@@ -2174,49 +2176,13 @@ var KeyJump
 var move_Array = []
 var randomMove : int
 var positionBeforeMove
-var iter
-var firstMoves : bool = false;
-var firstMovesIndex = 0;
+var lastFeedback
 
-func executeMove(move : int):
-	var moveScene = preload(\"res://move.tscn\").instantiate()
-	moveScene.get_node(\"Timer\").move = move
-	moveScene.get_node(\"Timer\").positionBeforeMove = self.position.x
-	moveScene.get_node(\"Timer\").player = self
-	self.add_child(moveScene)
-
-func saveMoves():
-	var conf = FileAccess.open(\"res://Scenes/Moves/conf.txt\", FileAccess.READ_WRITE)
-	
-	iter += 1
-	conf.store_string(str(iter))
-	conf.close()
-	
-	var fileToCreate = FileAccess.open(\"res://Scenes/Moves/iter\" + str(iter) + \".txt\", FileAccess.WRITE)
-	for i in move_Array:
-		fileToCreate.store_string(str(i) + \" \")
-	fileToCreate.close()
-	move_Array.clear()
-
-func loadMoves():
-	var file = FileAccess.open(\"res://Scenes/Moves/iter\" + str(iter) + \".txt\", FileAccess.READ)
-	var line = file.get_line()
-	var elements = line.split(\" \")
-	
-	for i in elements:
-		move_Array.append(int(i))
-	file.close()
-	print(str(move_Array) + \"\\n\")
-	firstMoves = true
 
 func _ready():
-	var file = FileAccess.open(\"res://Scenes/Moves/conf.txt\", FileAccess.READ_WRITE)
-	iter = int(file.get_as_text())
-	if iter > 0:
-		loadMoves()
-	file.close()
-
-func feedback(positionBeforeMove : int) -> int:
+	var file = FileAccess.open(\"res://Scenes/Moves/conf.txt\", FileAccess.READ)
+	print(file.get_as_text()))
+func feedback() -> int:
 	if self.position.x > positionBeforeMove:
 		if $healthBar.value == 100:
 			return 1
@@ -2224,17 +2190,19 @@ func feedback(positionBeforeMove : int) -> int:
 		return 0
 	return 0
 
-func validation(feedback : int, move : int):
-	print(feedback)
-	if feedback == 1:
-		move_Array.append(move)
-	else:
-		pass
+func validation():
+	if lastFeedback == 1:
+		move_Array.append(randomMove)
 
 func learning():
 	randomMove = randi() % 3
-	executeMove(randomMove)
+	var moveScene = preload(\"res://move.tscn\").instantiate()
+	moveScene.get_node(\"Timer\").move = randomMove
+	positionBeforeMove = self.position.x
+	moveScene.get_node(\"Timer\").player = self
+	self.add_child(moveScene)
 	
+
 func endGame():
 	var menu : PackedScene = preload(\"res://Scenes/control.tscn\")
 	get_tree().change_scene_to_packed(menu)
@@ -2259,8 +2227,7 @@ func hugeJump() -> void:
 
 func respawn() -> void:
 	self.position = respawnPosition
-	saveMoves()
-	loadMoves()
+
 func spike_dmg() -> void:
 	$healthBar.value -= 10
 	velocity.y = JUMP_VELOCITY
@@ -2270,15 +2237,8 @@ func lava_dmg() -> void:
 	velocity.y = JUMP_VELOCITY
 	
 func _physics_process(delta):
-	if firstMoves == true:
-		executeMove(move_Array[firstMovesIndex])
-		firstMovesIndex += 1
-		if firstMovesIndex == len(move_Array):
-			firstMoves = false
-			firstMovesIndex = 0
-	else:
-		pass
-		#learning()
+	learning()
+	validation()
 
 	if not is_on_floor():
 		velocity.y += gravity * delta
