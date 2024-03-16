@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://cwuaooarjctir"]
+
+[ext_resource type="Script" path="res://Timer.gd" id="1_bvk04"]
+
+[node name="Move" type="Node2D"]
+
+[node name="Timer" type="Timer" parent="."]
+script = ExtResource("1_bvk04")
+
+[connection signal="timeout" from="Timer" to="Timer" method="_on_timeout"]
