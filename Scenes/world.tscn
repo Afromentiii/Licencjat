@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://du7xnb5t53kx4" path="res://Images/spike.png" id="3_ytay2"]
 [ext_resource type="FontFile" uid="uid://b7dniplmdo5hr" path="res://Images/Xolonium-Bold.ttf" id="4_5dain"]
 [ext_resource type="Texture2D" uid="uid://c5lgbi8xjoaoj" path="res://Images/TileMap/lava16x16.png" id="4_7g3f7"]
-[ext_resource type="Script" path="res://Scripts/CharacterBody2D.gd" id="5_nu5g1"]
 [ext_resource type="Texture2D" uid="uid://vjh6tf1p0ivg" path="res://Images/ham.png" id="6_euqmk"]
 [ext_resource type="Texture2D" uid="uid://ct5efl274h8k5" path="res://Scripts/black.png" id="6_mh8h4"]
 [ext_resource type="Texture2D" uid="uid://cnl7kin2x2q1j" path="res://Scripts/Trampolina.png" id="7_cyvhh"]
@@ -2160,6 +2159,93 @@ outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="GDScript" id="GDScript_ij0vf"]
 
+[sub_resource type="GDScript" id="GDScript_5cbp6"]
+script/source = "extends CharacterBody2D
+
+
+
+const SPEED = 300.0
+const JUMP_VELOCITY = -400.0
+
+var gravity = ProjectSettings.get_setting(\"physics/2d/default_gravity\")
+var lastDirection : float = -2
+var deaths : int = 0
+var respawnPosition = Vector2(10,10)
+var direction = 0
+var KeyJump
+
+
+func endGame():
+	var menu : PackedScene = preload(\"res://Scenes/control.tscn\")
+	get_tree().change_scene_to_packed(menu)
+	
+	
+
+
+func enemyDMG():
+	$healthBar.value -= 30
+	velocity.y = -300
+	
+
+func lavaColumn_dmg() -> void:
+	$healthBar.value -= 40
+	velocity.y = -250
+	self.position.x -= 80 * direction
+
+	
+func blackMatter_dmg() -> void:
+	$healthBar.value -= 100
+
+func hugeJump() -> void:
+	velocity.y = -650
+
+func respawn() -> void:
+	self.position = respawnPosition
+
+func spike_dmg() -> void:
+	$healthBar.value -= 10
+	velocity.y = JUMP_VELOCITY
+	
+func lava_dmg() -> void:
+	$healthBar.value -= 25
+	velocity.y = JUMP_VELOCITY
+	
+func _physics_process(delta):
+
+	if not is_on_floor():
+		velocity.y += gravity * delta
+
+	if Input.is_action_just_pressed(\"jump\") and is_on_floor():
+		velocity.y = JUMP_VELOCITY
+
+	direction = Input.get_axis(\"left\", \"right\")
+	if direction == -1:
+		velocity.x = direction * SPEED
+		$AnimatedSprite2D.play(\"runL\")
+		lastDirection = -1
+	elif direction == 1:
+		velocity.x = direction * SPEED
+		$AnimatedSprite2D.play(\"runR\")
+		lastDirection = 1
+	else:
+		velocity.x = move_toward(velocity.x, 0, SPEED)
+		if lastDirection == 1:
+			$AnimatedSprite2D.play(\"defaultR\")
+		else:
+			$AnimatedSprite2D.play(\"defaultL\")
+
+	if $healthBar.value <= 0:
+		$healthBar.value = 100
+		deaths += 1
+		%Deaths.text = \"Deaths: \" + var_to_str(deaths)
+		self.respawn()
+
+
+	move_and_slide()
+
+
+"
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ch4m3"]
 size = Vector2(24.6641, 13.3589)
 
@@ -2693,7 +2779,7 @@ script = SubResource("GDScript_ij0vf")
 
 [node name="Player" type="CharacterBody2D" parent="."]
 position = Vector2(7238.7, -1789.57)
-script = ExtResource("5_nu5g1")
+script = SubResource("GDScript_5cbp6")
 
 [node name="CollwisionShape2D" type="CollisionShape2D" parent="Player"]
 position = Vector2(0.167969, -5.6795)
