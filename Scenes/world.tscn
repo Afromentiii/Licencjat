@@ -2173,15 +2173,21 @@ var deaths : int = 0
 var respawnPosition = Vector2(10,10)
 var direction = 0
 var KeyJump
+var move_Array = []
+var randomMove : int
 
+func learning():
+	randomMove = randi() % 4
+	var moveScene = preload(\"res://move.tscn\").instantiate()
+	moveScene.get_node(\"Timer\").move = randomMove
+	self.add_child(moveScene)
+	
 
 func endGame():
 	var menu : PackedScene = preload(\"res://Scenes/control.tscn\")
 	get_tree().change_scene_to_packed(menu)
 	
 	
-
-
 func enemyDMG():
 	$healthBar.value -= 30
 	velocity.y = -300
@@ -2211,6 +2217,7 @@ func lava_dmg() -> void:
 	velocity.y = JUMP_VELOCITY
 	
 func _physics_process(delta):
+	learning()
 
 	if not is_on_floor():
 		velocity.y += gravity * delta
