@@ -1,0 +1,89 @@
+[gd_scene load_steps=7 format=3 uid="uid://bhro81jnu3m1r"]
+
+[ext_resource type="Script" path="res://Scripts/control.gd" id="1_pc7ie"]
+[ext_resource type="FontFile" uid="uid://b7dniplmdo5hr" path="res://Images/Xolonium-Bold.ttf" id="2_oh6if"]
+[ext_resource type="Script" path="res://Scenes/Play.gd" id="3_fsb8r"]
+[ext_resource type="Texture2D" uid="uid://whx5vho0hrel" path="res://Images/wp11630931-main-menu-wallpapers.png" id="3_i8emw"]
+[ext_resource type="Script" path="res://Scenes/Exit.gd" id="4_wr80b"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_k1xcq"]
+font = ExtResource("2_oh6if")
+font_size = 120
+outline_size = 8
+outline_color = Color(0, 0, 0, 1)
+
+[node name="Control" type="Control"]
+process_priority = 1
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_right = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pc7ie")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 735.5
+offset_top = 189.5
+offset_right = -744.5
+offset_bottom = -461.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 70
+theme_override_constants/margin_top = 70
+theme_override_constants/margin_right = 70
+theme_override_constants/margin_bottom = 70
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 32
+
+[node name="Play" type="Button" parent="MarginContainer/VBoxContainer"]
+process_mode = 3
+custom_minimum_size = Vector2(300, 75)
+layout_mode = 2
+theme_override_colors/font_hover_color = Color(0, 1, 0, 1)
+theme_override_fonts/font = ExtResource("2_oh6if")
+theme_override_font_sizes/font_size = 64
+text = "PLAY"
+script = ExtResource("3_fsb8r")
+
+[node name="Options" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(300, 75)
+layout_mode = 2
+theme_override_colors/font_hover_color = Color(0, 1, 0, 1)
+theme_override_fonts/font = ExtResource("2_oh6if")
+theme_override_font_sizes/font_size = 64
+text = "OPTIONS"
+
+[node name="Exit" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(300, 75)
+layout_mode = 2
+theme_override_colors/font_hover_color = Color(0, 1, 0, 1)
+theme_override_fonts/font = ExtResource("2_oh6if")
+theme_override_font_sizes/font_size = 64
+text = "EXIT"
+script = ExtResource("4_wr80b")
+
+[node name="Wp11630931-main-menu-wallpapers" type="Sprite2D" parent="."]
+show_behind_parent = true
+position = Vector2(960.5, 540)
+scale = Vector2(1.50547, 1.50833)
+texture = ExtResource("3_i8emw")
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 67.0
+text = "Hamster's adventure"
+label_settings = SubResource("LabelSettings_k1xcq")
+horizontal_alignment = 1
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Play" to="MarginContainer/VBoxContainer/Play" method="_on_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Exit" to="MarginContainer/VBoxContainer/Exit" method="_on_pressed"]
