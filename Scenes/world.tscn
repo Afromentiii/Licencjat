@@ -9,10 +9,10 @@
 [ext_resource type="Texture2D" uid="uid://vjh6tf1p0ivg" path="res://Images/ham.png" id="6_euqmk"]
 [ext_resource type="Texture2D" uid="uid://ct5efl274h8k5" path="res://Scripts/black.png" id="6_mh8h4"]
 [ext_resource type="Texture2D" uid="uid://cnl7kin2x2q1j" path="res://Scripts/Trampolina.png" id="7_cyvhh"]
-[ext_resource type="Texture2D" uid="uid://c025oeg7qnj05" path="res://Images/Player/test.png" id="7_lldb3"]
+[ext_resource type="Texture2D" uid="uid://c025oeg7qnj05" path="res://Images/test.png" id="7_lldb3"]
 [ext_resource type="Texture2D" uid="uid://cj4y1ilm3xqjy" path="res://Images/TileMap/lava.png" id="8_ctumo"]
 [ext_resource type="Texture2D" uid="uid://c7nttvm4xgmuj" path="res://Images/left2.png" id="8_uatxy"]
-[ext_resource type="Texture2D" uid="uid://d1raj3l4p0v5n" path="res://Images/Player/left.png" id="9_tou8d"]
+[ext_resource type="Texture2D" uid="uid://d1raj3l4p0v5n" path="res://Images/left.png" id="9_tou8d"]
 [ext_resource type="Script" path="res://Scripts/Area2D.gd" id="10_7631r"]
 [ext_resource type="Script" path="res://Scenes/Lava.gd" id="13_pasjr"]
 [ext_resource type="Texture2D" uid="uid://b7vcev0n1u5oy" path="res://Scripts/platform.png" id="14_owr7r"]
@@ -2181,20 +2181,46 @@ var iter
 var thread = Thread.new()
 var call = Callable(self, \"gMoves\")
 var call2 = Callable(self, \"executeMovesFromFile\")
+var wait = Callable(self, \"wait\")
+var learn = Callable(self, \"learning\")
+var is_dead : bool = false
 
-func gMoves():
-	while true:
-		
-		move = int(randi_range(0,2))
+func learning():
+	var conf = FileAccess.open(\"res://Scenes/Moves/conf.txt\", FileAccess.READ)
+	iter = int(conf.get_as_text())
+	conf.close()
+	
+	var file1 = FileAccess.open(\"res://Scenes/Moves/iter\" + str(iter) + \".txt\", FileAccess.READ)
+	var line = file1.get_line()
+	var line_splited = line.split(\" \")
+	for i in line_splited:
 		var s = preload(\"res://Scenes/move.tscn\").instantiate()
-		s.get_node(\"Timer\").move = move
+		s.get_node(\"Timer\").move = int(i)
 		s.get_node(\"Timer\").player = self
 		s.get_node(\"Timer\").positionBeforeMove = self.position.x
 		add_child(s)
 		await get_tree().create_timer(0.25).timeout
+		print(moves_array)
+		moves_array.append(int(i))
+	file1.close()
+	
+
+func gMoves():
+	move = int(randi_range(0,2))
+	print(\"Move is\" + str(move))
+	var s = preload(\"res://Scenes/move.tscn\").instantiate()
+	s.get_node(\"Timer\").move = move
+	s.get_node(\"Timer\").player = self
+	s.get_node(\"Timer\").positionBeforeMove = self.position.x
+	add_child(s)
+	await get_tree().create_timer(0.25).timeout
+	
+	if self.feedback == 1:
+		moves_array.append(move)
+		self.feedback = -1
 		
-		if self.feedback == 1:
-			moves_array.append(move)
+	await get_tree().create_timer(0.25).timeout
+			
 			
 func executeMovesFromFile():
 	var file = FileAccess.open(\"res://Scenes/Moves/iter\" + str(iter) + \".txt\", FileAccess.READ_WRITE)
@@ -2213,29 +2239,23 @@ func executeMovesFromFile():
 
 func createIterFile():
 	iter += 1
-	var file = FileAccess.open(\"res://Scenes/Moves/iter\" + str(iter) + \".txt\", FileAccess.WRITE)
-	for i in moves_array:
-		file.store_string(str(i) + \" \")
-	file.close()
 	
 	var conf = FileAccess.open(\"res://Scenes/Moves/conf.txt\", FileAccess.WRITE)
 	conf.store_string(str(iter))
 	conf.close()
-
-func loadConf():
-	var file = FileAccess.open(\"res://Scenes/Moves/conf.txt\", FileAccess.READ_WRITE)
-	iter = int(file.get_as_text())
 	
-	if iter > 0:
-		var thread = Thread.new()
-		var call = Callable(self, \"executeMovesFromFile\")
-		thread.start(call, Thread.PRIORITY_HIGH)
-		thread.wait_to_finish()
-	
+	var file = FileAccess.open(\"res://Scenes/Moves/iter\" + str(iter) + \".txt\", FileAccess.WRITE)
+	for i in moves_array:
+		file.store_string(str(i) + \" \")
+		
+	await get_tree().create_timer(1).timeout
 	file.close()
+	
 func _ready():
-	loadConf()
-
+	pass
+	#loadConf()
+	#thread.start(learn, Thread.PRIORITY_HIGH)
+	#thread.wait_to_finish()
 
 	
 func endGame():
@@ -2263,12 +2283,12 @@ func hugeJump() -> void:
 
 func respawn() -> void:
 	self.position = respawnPosition
-	createIterFile()
-	moves_array.clear()
-	thread.start(call, Thread.PRIORITY_HIGH)
-	thread.wait_to_finish()
-
+	#createIterFile()
+	#moves_array.clear()
+	#thread.wait_to_finish()
 	
+	#thread.start(call, Thread.PRIORITY_HIGH)
+	#thread.wait_to_finish()
 
 func spike_dmg() -> void:
 	$healthBar.value -= 10
@@ -2303,10 +2323,12 @@ func _physics_process(delta):
 			$AnimatedSprite2D.play(\"defaultL\")
 
 	if $healthBar.value <= 0:
-		$healthBar.value = 100
+		is_dead = true
 		deaths += 1
 		%Deaths.text = \"Deaths: \" + var_to_str(deaths)
+		$healthBar.value = 100
 		self.respawn()
+
 
 
 	move_and_slide()
