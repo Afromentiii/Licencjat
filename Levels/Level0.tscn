@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://b706vbylgsy2b"]
+[gd_scene load_steps=7 format=3 uid="uid://b706vbylgsy2b"]
 
 [ext_resource type="PackedScene" uid="uid://cjfwkrdtab2vt" path="res://TileMap/tile_map.tscn" id="1_4sblw"]
 [ext_resource type="Script" path="res://Levels/Level0.gd" id="1_um642"]
 [ext_resource type="PackedScene" uid="uid://dr8ojjpf3tl1o" path="res://Scenes/player.tscn" id="2_tjnhf"]
 [ext_resource type="PackedScene" uid="uid://d0l3qj6wrlljv" path="res://Scenes/end_game.tscn" id="3_8kme4"]
+[ext_resource type="Script" path="res://MovableCamera.gd" id="6_jiotn"]
 [ext_resource type="Script" path="res://Scripts/QLearning.gd" id="6_ncbwn"]
 
 [node name="Level0" type="Node2D"]
@@ -20,3 +21,7 @@ position = Vector2(227, -2)
 
 [node name="QLearning" type="Node2D" parent="."]
 script = ExtResource("6_ncbwn")
+
+[node name="MovableCamera" type="Camera2D" parent="."]
+position = Vector2(-484.481, -155.919)
+script = ExtResource("6_jiotn")
