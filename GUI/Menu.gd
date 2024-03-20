@@ -11,8 +11,9 @@ func _ready():
 func _process(_delta):
 	pass
 
-func _on_play_pressed():
-	get_tree().change_scene_to_packed(load("res://GUI/Levels.tscn"))
-
 func _on_quit_pressed():
 	get_tree().quit()
+
+
+func _on_start_pressed():
+	get_tree().change_scene_to_packed(load("res://GUI/Levels.tscn"))
