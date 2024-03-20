@@ -189,6 +189,7 @@ animations = [{
 }]
 
 [node name="Player" type="CharacterBody2D"]
+collision_layer = 0
 script = SubResource("GDScript_5cbp6")
 
 [node name="CollwisionShape2D" type="CollisionShape2D" parent="."]
