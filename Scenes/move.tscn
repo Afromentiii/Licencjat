@@ -1,10 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://cwuaooarjctir"]
+[gd_scene load_steps=2 format=3 uid="uid://dcw8avyqup36i"]
 
-[ext_resource type="Script" path="res://Timer.gd" id="1_bvk04"]
+[ext_resource type="Script" path="res://Scripts/Timer.gd" id="1_mu7d1"]
 
 [node name="Move" type="Node2D"]
 
 [node name="Timer" type="Timer" parent="."]
-script = ExtResource("1_bvk04")
+script = ExtResource("1_mu7d1")
 
 [connection signal="timeout" from="Timer" to="Timer" method="_on_timeout"]
