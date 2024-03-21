@@ -2,5 +2,6 @@ extends Area2D
 
 
 func _on_body_entered(body):
-	if body.has_method("endGame"):
-		body.endGame()
+	print("XD")
+	if body.has_method("respawn"):
+		body.respawn()

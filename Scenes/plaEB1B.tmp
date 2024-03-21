@@ -22,46 +22,47 @@ var direction = 0
 var KeyJump
 var is_dead : bool = false
 var moveArr = [\"right\", \"jump\", \"nothing\"]
-var is_moving_right = false
-var is_jumping = false
 
 func move(move : int, time : float):
 	if move == 0:
-		is_moving_right = true
-		await get_tree().create_timer(time).timeout
-		is_moving_right = false
+		var velocity = Vector2(SPEED * 100, 0)
+		move_and_slide(velocity)
 	elif move == 2:
-		pass
+		await get_tree().create_timer(time).timeout	
 	else:
-		is_jumping = true
-		is_moving_right = true
-		await get_tree().create_timer(0.3).timeout
-		is_moving_right = false
+		Input.action_press(\"jump\", 2.0)
+		Input.action_release(\"jump\")
+		Input.action_press(\"right\")
+		await get_tree().create_timer(time).timeout
+		Input.action_release(\"right\")
 
 func _ready():
 	self.position = get_parent().spawnPos
-	self.position.x += randf_range(10.0,54)
+	self.position.x += randf_range(10.0,50.0)
 	
 func endGame():
 	get_tree().quit()
 
-func respawn():
-	self.position = respawnPosition 
 
 func enemyDMG():
 	$healthBar.value -= 30
 	velocity.y = -300
 	
+
 func lavaColumn_dmg() -> void:
 	$healthBar.value -= 40
 	velocity.y = -250
 	self.position.x -= 80 * direction
 
+	
 func blackMatter_dmg() -> void:
 	$healthBar.value -= 100
 
 func hugeJump() -> void:
 	velocity.y = -650
+
+func respawn() -> void:
+	self.position = respawnPosition
 
 func spike_dmg() -> void:
 	$healthBar.value -= 10
@@ -75,19 +76,31 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y += gravity * delta
 
-	if is_jumping and is_on_floor():
+	if Input.is_action_just_pressed(\"jump\") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
-		is_jumping = false
 
 	direction = Input.get_axis(\"left\", \"right\")
-	if is_moving_right == true:
-		velocity.x = 1 * SPEED
+	if direction == -1:
+		velocity.x = direction * SPEED
+		$AnimatedSprite2D.play(\"runL\")
+		lastDirection = -1
+	elif direction == 1:
+		velocity.x = direction * SPEED
 		$AnimatedSprite2D.play(\"runR\")
 		lastDirection = 1
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
-	
+		if lastDirection == 1:
+			$AnimatedSprite2D.play(\"defaultR\")
+		else:
+			$AnimatedSprite2D.play(\"defaultL\")
 
+	if $healthBar.value <= 0:
+		is_dead = true
+		deaths += 1
+		%Deaths.text = \"Deaths: \" + var_to_str(deaths)
+		$healthBar.value = 100
+		self.respawn()
 
 
 

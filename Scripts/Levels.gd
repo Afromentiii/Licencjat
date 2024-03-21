@@ -16,4 +16,4 @@ func _on_quit():
 
 
 func _on_level_0_pressed():
-	get_tree().change_scene_to_packed(load("res://Levels/Level0.tscn"))
+	get_tree().change_scene_to_packed(load("res://Levels/Level0/Level0.tscn"))
