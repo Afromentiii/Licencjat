@@ -14,13 +14,12 @@ func learn():
 			i.move(move,randf_range(0,0.5))
 		await get_tree().create_timer(0.5).timeout
 
-
-	
 func _ready():
-	for i in range(0,1):
+	for i in range(0,333):
 		var p1 = preload("res://Scenes/player.tscn").instantiate()
 		get_parent().call_deferred("add_child",p1)
 		p1.position = get_parent().spawnPos
+		p1.respawnPosition = get_parent().spawnPos
 		players.append(p1)
 
 	var t = Thread.new()

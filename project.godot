@@ -59,3 +59,5 @@ B_LEFT={
 [layer_names]
 
 2d_render/layer_1="PLAYER"
+2d_physics/layer_1="ENV"
+2d_physics/layer_2="PLAYER"
