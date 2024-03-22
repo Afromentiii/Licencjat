@@ -1,9 +1,9 @@
 [gd_scene load_steps=15 format=3 uid="uid://dr8ojjpf3tl1o"]
 
-[ext_resource type="Texture2D" uid="uid://vjh6tf1p0ivg" path="res://Images/ham.png" id="1_f5gg4"]
-[ext_resource type="Texture2D" uid="uid://c025oeg7qnj05" path="res://Images/test.png" id="2_tnck4"]
-[ext_resource type="Texture2D" uid="uid://c7nttvm4xgmuj" path="res://Images/left2.png" id="3_mwvfn"]
-[ext_resource type="Texture2D" uid="uid://d1raj3l4p0v5n" path="res://Images/left.png" id="4_p6upc"]
+[ext_resource type="Texture2D" uid="uid://vjh6tf1p0ivg" path="res://Images/Player/ham.png" id="1_f5gg4"]
+[ext_resource type="Texture2D" uid="uid://c025oeg7qnj05" path="res://Images/Player/test.png" id="2_tnck4"]
+[ext_resource type="Texture2D" uid="uid://c7nttvm4xgmuj" path="res://Images/Player/left2.png" id="3_mwvfn"]
+[ext_resource type="Texture2D" uid="uid://d1raj3l4p0v5n" path="res://Images/Player/left.png" id="4_p6upc"]
 
 [sub_resource type="GDScript" id="GDScript_5cbp6"]
 script/source = "extends CharacterBody2D
@@ -29,6 +29,12 @@ var reward = 0
 var previous_pos_x = 0
 var move_end_pos_x = 0
 var iter_stacked_counter = 0
+var moves = []
+var timers = []
+var playerID = -1
+
+func print_gen_data():
+	print(\"Player id is: \" + str(playerID)+ \" Reward is: \" + str(reward) + \" Execute moves are: \" + str(moves) + str(timers))
 
 func move(move : int, time : float):
 	previous_pos_x = self.position.x
@@ -38,14 +44,16 @@ func move(move : int, time : float):
 		await get_tree().create_timer(time).timeout
 		is_moving_right = false
 	elif move == 2:
-		pass
+		await get_tree().create_timer(time).timeout
 	else:
 		is_jumping = true
 		is_moving_right = true
-		await get_tree().create_timer(0.3).timeout
+		await get_tree().create_timer(time).timeout
 		is_moving_right = false
-		
+	
 	move_end_pos_x = self.position.x
+	moves.append(move)
+	timers.append(time)
 	
 	if move_end_pos_x > previous_pos_x:
 		reward += 10
@@ -53,7 +61,7 @@ func move(move : int, time : float):
 	else:
 		iter_stacked_counter += 1
 		if iter_stacked_counter == 10:
-			reward -= 100
+			reward -= 200
 			respawn()
 	
 func _ready():
@@ -68,6 +76,7 @@ func respawn():
 	self.is_dead = true
 	self.is_jumping = false
 	self.is_moving_right = false
+	print_gen_data()
 	
 func enemyDMG():
 	$healthBar.value -= 30
