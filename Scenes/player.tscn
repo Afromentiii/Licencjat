@@ -52,22 +52,39 @@ func live():
 	
 	#do_nothing = 6
 	while true:
-		var move = randi_range(0,2)
+		var move = randi_range(0,5)
 		var time = randf_range(0.2, 0.5)
 		previous_pos_x = pos_x
 		
 		if move == 0:
 			is_moving_right = true
-			await get_tree().create_timer(time).timeout
+			await get_tree().create_timer(1).timeout
+			is_moving_right = false
+		elif move == 1:
+			is_moving_right = true
+			await get_tree().create_timer(0.25).timeout
 			is_moving_right = false
 		elif move == 2:
-			await get_tree().create_timer(time).timeout
-		else:
+			is_moving_right = true
+			await get_tree().create_timer(0.5).timeout
+			is_moving_right = false
+		elif move == 3:
 			is_jumping = true
 			is_moving_right = true
-			await get_tree().create_timer(time).timeout
+			await get_tree().create_timer(0.1).timeout
+			is_moving_right = false
+		elif move == 4:
+			is_jumping = true
+			is_moving_right = true
+			await get_tree().create_timer(0.25).timeout
+			is_moving_right = false
+		elif move == 5:
+			is_jumping = true
+			is_moving_right = true
+			await get_tree().create_timer(0.5).timeout
 			is_moving_right = false
 		
+		await get_tree().create_timer(0.75).timeout
 		move_end_pos_x = pos_x
 		moves.append(move)
 		

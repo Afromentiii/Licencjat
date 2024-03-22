@@ -16,7 +16,7 @@ func learn():
 	for i in players:
 		i.t.start(i.life, Thread.PRIORITY_HIGH)
 func _ready():
-	for i in range(0,32):
+	for i in range(0,1):
 		var p = preload("res://Scenes/player.tscn").instantiate()
 		get_parent().call_deferred("add_child",p)
 		p.position = get_parent().spawnPos
