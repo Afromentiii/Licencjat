@@ -80,6 +80,7 @@ func lavaColumn_dmg() -> void:
 
 func blackMatter_dmg() -> void:
 	$healthBar.value -= 100
+	reward -= 300
 
 func hugeJump() -> void:
 	velocity.y = -650
@@ -87,6 +88,7 @@ func hugeJump() -> void:
 func spike_dmg() -> void:
 	$healthBar.value -= 10
 	velocity.y = JUMP_VELOCITY
+	reward -= 5
 	
 func lava_dmg() -> void:
 	$healthBar.value -= 25
