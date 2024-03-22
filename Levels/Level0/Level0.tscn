@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Levels/Level0/Level0.gd" id="1_uq3w7"]
 [ext_resource type="PackedScene" uid="uid://cjfwkrdtab2vt" path="res://TileMap/tile_map.tscn" id="2_8tku7"]
 [ext_resource type="Script" path="res://Scripts/QLearning.gd" id="4_4l0m8"]
-[ext_resource type="Script" path="res://MovableCamera.gd" id="5_lgp1o"]
+[ext_resource type="PackedScene" uid="uid://ok2hhuga753" path="res://movable_camera.tscn" id="4_id7xs"]
 [ext_resource type="PackedScene" uid="uid://d0l3qj6wrlljv" path="res://Scenes/end_game.tscn" id="5_vcahi"]
 
 [node name="Level0" type="Node2D"]
@@ -15,11 +15,7 @@ layer_0/tile_data = PackedInt32Array(65527, 524288, 3, 65528, 524288, 3, 65529, 
 [node name="GeneticAlgorithm" type="Node2D" parent="."]
 script = ExtResource("4_4l0m8")
 
-[node name="MovableCamera" type="Camera2D" parent="."]
-position = Vector2(-480, -113)
-zoom = Vector2(2, 2)
-position_smoothing_enabled = true
-position_smoothing_speed = 2.5
-script = ExtResource("5_lgp1o")
+[node name="MovableCamera" parent="." instance=ExtResource("4_id7xs")]
 
 [node name="EndGame" parent="." instance=ExtResource("5_vcahi")]
+position = Vector2(216, -3)

@@ -2,20 +2,26 @@ extends Node2D
 
 
 var iter = 0
-var states = []
 var call = Callable(self, "learn")
 var players = []
+var player_is_dead_counter = 0
+var move : int = 0
+@export var path_to_conf = "res://Levels/Level0/GeneticAlgorithm0/conf.txt"
 
 func learn():
 	await get_tree().create_timer(2).timeout
 	while true:
-		for i in players:
-			var move = randi_range(0,1)
-			i.move(move,randf_range(0,0.5))
+		if  player_is_dead_counter != len(players):
+			for i in players:
+				if i.is_dead == false:
+					move = randi_range(0,1)
+					i.move(move,randf_range(0,0.5))
+				else:
+					player_is_dead_counter += 1
 		await get_tree().create_timer(0.5).timeout
 
 func _ready():
-	for i in range(0,333):
+	for i in range(0,8):
 		var p1 = preload("res://Scenes/player.tscn").instantiate()
 		get_parent().call_deferred("add_child",p1)
 		p1.position = get_parent().spawnPos
@@ -26,8 +32,5 @@ func _ready():
 	t.start(call,Thread.PRIORITY_HIGH)
 	
 	
-	
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass

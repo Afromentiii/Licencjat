@@ -1,9 +1,9 @@
 [gd_scene load_steps=15 format=3 uid="uid://dr8ojjpf3tl1o"]
 
-[ext_resource type="Texture2D" uid="uid://vjh6tf1p0ivg" path="res://Images/Player/ham.png" id="1_f5gg4"]
-[ext_resource type="Texture2D" uid="uid://c025oeg7qnj05" path="res://Images/Player/test.png" id="2_tnck4"]
-[ext_resource type="Texture2D" uid="uid://c7nttvm4xgmuj" path="res://Images/Player/left2.png" id="3_mwvfn"]
-[ext_resource type="Texture2D" uid="uid://d1raj3l4p0v5n" path="res://Images/Player/left.png" id="4_p6upc"]
+[ext_resource type="Texture2D" uid="uid://vjh6tf1p0ivg" path="res://Images/ham.png" id="1_f5gg4"]
+[ext_resource type="Texture2D" uid="uid://c025oeg7qnj05" path="res://Images/test.png" id="2_tnck4"]
+[ext_resource type="Texture2D" uid="uid://c7nttvm4xgmuj" path="res://Images/left2.png" id="3_mwvfn"]
+[ext_resource type="Texture2D" uid="uid://d1raj3l4p0v5n" path="res://Images/left.png" id="4_p6upc"]
 
 [sub_resource type="GDScript" id="GDScript_5cbp6"]
 script/source = "extends CharacterBody2D
@@ -19,13 +19,20 @@ var lastDirection : float = -2
 var deaths : int = 0
 var respawnPosition = Vector2(10,10)
 var direction = 0
-var KeyJump
-var is_dead : bool = false
+
 var moveArr = [\"right\", \"jump\", \"nothing\"]
-var is_moving_right = false
-var is_jumping = false
+var is_dead : bool = false
+var is_moving_right : bool = false
+var is_jumping : bool = false
+var is_stacked : bool = false
+var reward = 0
+var previous_pos_x = 0
+var move_end_pos_x = 0
+var iter_stacked_counter = 0
 
 func move(move : int, time : float):
+	previous_pos_x = self.position.x
+	
 	if move == 0:
 		is_moving_right = true
 		await get_tree().create_timer(time).timeout
@@ -37,17 +44,31 @@ func move(move : int, time : float):
 		is_moving_right = true
 		await get_tree().create_timer(0.3).timeout
 		is_moving_right = false
-
+		
+	move_end_pos_x = self.position.x
+	
+	if move_end_pos_x > previous_pos_x:
+		reward += 10
+		iter_stacked_counter = 0
+	else:
+		iter_stacked_counter += 1
+		if iter_stacked_counter == 10:
+			reward -= 100
+			respawn()
+	
 func _ready():
 	self.position = get_parent().spawnPos
-	self.position.x += randf_range(10.0,54)
 	
 func endGame():
-	get_tree().quit()
+	reward += 999999
+	respawn()
 
 func respawn():
 	self.position = respawnPosition
-
+	self.is_dead = true
+	self.is_jumping = false
+	self.is_moving_right = false
+	
 func enemyDMG():
 	$healthBar.value -= 30
 	velocity.y = -300
@@ -87,6 +108,8 @@ func _physics_process(delta):
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 	
+	if healthBar.value <= 0:
+		respawn()
 
 
 
