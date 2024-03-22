@@ -13,24 +13,17 @@ var totalTimeMoves : float = 0.0
 
 func learn():
 	await get_tree().create_timer(1).timeout
-	while true:
-		for i in players:
-			if i.is_dead == false:
-				var timer = randf_range(0.25, 0.5)
-				move = randi_range(0,1)
-				i.move(move,timer)
-				totalTimeMoves += timer
-		await get_tree().create_timer(totalTimeMoves).timeout
-		totalTimeMoves = 0.0
-		
+	for i in players:
+		i.t.start(i.life, Thread.PRIORITY_HIGH)
 func _ready():
-	for i in range(0,2):
-		var p1 = preload("res://Scenes/player.tscn").instantiate()
-		get_parent().call_deferred("add_child",p1)
-		p1.position = get_parent().spawnPos
-		p1.respawnPosition = get_parent().spawnPos
-		p1.playerID = i
-		players.append(p1)
+	for i in range(0,32):
+		var p = preload("res://Scenes/player.tscn").instantiate()
+		get_parent().call_deferred("add_child",p)
+		p.position = get_parent().spawnPos
+		p.respawnPosition = get_parent().spawnPos
+		p.playerID = i
+		p.get_node("Index").text = str(i)
+		players.append(p)
 
 	var t = Thread.new()
 	t.start(call,Thread.PRIORITY_HIGH)

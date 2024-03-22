@@ -14,13 +14,13 @@ const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
 
 @onready var healthBar = $healthBar
+
 var gravity = ProjectSettings.get_setting(\"physics/2d/default_gravity\")
 var lastDirection : float = -2
 var deaths : int = 0
 var respawnPosition = Vector2(10,10)
 var direction = 0
 
-var moveArr = [\"right\", \"jump\", \"nothing\"]
 var is_dead : bool = false
 var is_moving_right : bool = false
 var is_jumping : bool = false
@@ -30,40 +30,59 @@ var previous_pos_x = 0
 var move_end_pos_x = 0
 var iter_stacked_counter = 0
 var moves = []
-var timers = []
 var playerID = -1
+var summmed_Timers
 
+var pos_x = 0
+var life = Callable(self, \"live\")
+var t = Thread.new()
+
+		
 func print_gen_data():
-	print(\"Player id is: \" + str(playerID)+ \" Reward is: \" + str(reward) + \" Execute moves are: \" + str(moves) + str(timers))
+	print(\"Player id is: \" + str(playerID)+ \" Reward is: \" + str(reward) + \" Executed moves are: \" + str(moves))
 
-func move(move : int, time : float):
-	previous_pos_x = self.position.x
+func live():
+	#index_short_right = 0
+	#index_mid_right = 1
+	#index_high_right = 2
 	
-	if move == 0:
-		is_moving_right = true
-		await get_tree().create_timer(time).timeout
-		is_moving_right = false
-	elif move == 2:
-		await get_tree().create_timer(time).timeout
-	else:
-		is_jumping = true
-		is_moving_right = true
-		await get_tree().create_timer(time).timeout
-		is_moving_right = false
+	#index_short_jump = 3
+	#index_mid_jump = 4
+	#index_high_jump = 5
 	
-	move_end_pos_x = self.position.x
-	moves.append(move)
-	timers.append(time)
-	
-	if move_end_pos_x > previous_pos_x:
-		reward += 10
-		iter_stacked_counter = 0
-	else:
-		iter_stacked_counter += 1
-		if iter_stacked_counter == 10:
-			reward -= 200
-			respawn()
-	
+	#do_nothing = 6
+	while true:
+		var move = randi_range(0,2)
+		var time = randf_range(0.2, 0.5)
+		previous_pos_x = pos_x
+		
+		if move == 0:
+			is_moving_right = true
+			await get_tree().create_timer(time).timeout
+			is_moving_right = false
+		elif move == 2:
+			await get_tree().create_timer(time).timeout
+		else:
+			is_jumping = true
+			is_moving_right = true
+			await get_tree().create_timer(time).timeout
+			is_moving_right = false
+		
+		move_end_pos_x = pos_x
+		moves.append(move)
+		
+		if move_end_pos_x > previous_pos_x:
+			reward += 10
+			iter_stacked_counter = 0
+		else:
+			iter_stacked_counter += 1
+			reward -= 5
+			if iter_stacked_counter == 5:
+				reward -= 200
+				respawn()
+		if is_dead == true:
+			break	
+			
 func _ready():
 	self.position = get_parent().spawnPos
 	
@@ -77,6 +96,9 @@ func respawn():
 	self.is_jumping = false
 	self.is_moving_right = false
 	print_gen_data()
+	self.move_end_pos_x = 0
+	self.previous_pos_x = 0
+	self.moves.clear()
 	
 func enemyDMG():
 	$healthBar.value -= 30
@@ -104,6 +126,9 @@ func lava_dmg() -> void:
 	velocity.y = JUMP_VELOCITY
 	
 func _physics_process(delta):
+	
+	pos_x = position.x
+	
 	if not is_on_floor():
 		velocity.y += gravity * delta
 
@@ -119,8 +144,6 @@ func _physics_process(delta):
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 	
-	if healthBar.value <= 0:
-		respawn()
 
 
 
@@ -224,9 +247,16 @@ animation = &"defaultL"
 
 [node name="healthBar" type="ProgressBar" parent="."]
 modulate = Color(0.227451, 0.909804, 0, 1)
-offset_left = -15.0
+offset_left = -14.0
 offset_top = -17.0
-offset_right = 13.0
+offset_right = 14.0
 offset_bottom = -13.0
 value = 100.0
 show_percentage = false
+
+[node name="Index" type="RichTextLabel" parent="."]
+offset_left = -8.0
+offset_top = -36.0
+offset_right = 12.0
+offset_bottom = -13.0
+fit_content = true
