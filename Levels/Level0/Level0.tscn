@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Levels/Level0/Level0.gd" id="1_uq3w7"]
 [ext_resource type="PackedScene" uid="uid://cjfwkrdtab2vt" path="res://TileMap/tile_map.tscn" id="2_8tku7"]
-[ext_resource type="PackedScene" uid="uid://cax4mp0klk1yc" path="res://genetic_algorithm.tscn" id="3_w8pbg"]
+[ext_resource type="PackedScene" uid="uid://cax4mp0klk1yc" path="res://Scenes/genetic_algorithm.tscn" id="3_w8pbg"]
 [ext_resource type="PackedScene" uid="uid://ok2hhuga753" path="res://Scenes/movable_camera.tscn" id="4_id7xs"]
 [ext_resource type="PackedScene" uid="uid://d0l3qj6wrlljv" path="res://Scenes/end_game.tscn" id="5_vcahi"]
 

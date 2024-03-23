@@ -6,6 +6,7 @@ extends Node2D
 @onready var load_gen_button = $Control/VBoxContainer/Button
 @onready var textArea = $Control/VBoxContainer/Button/TextEdit
 @onready var generate_first_gen = $Control/VBoxContainer/GenerateFirstGeneration
+@onready var start_genetic_algorithm = $Control/VBoxContainer/StartGenetic
 
 
 var is_generation_dead : bool = false
@@ -14,6 +15,8 @@ var is_button_just_pressed : bool = false
 var is_generate_button_just_pressed : bool = false
 var is_living_process_started : bool = false
 var is_saving : bool = false
+var is_genetic_button_just_pressed : bool = false
+var is_genetic_started : bool = false
 
 var call = Callable(self, "learn")
 var players = []
@@ -67,7 +70,7 @@ func is_population_dead():
 			is_generation_dead = true
 			
 func load_generation_procedure():
-	if is_button_just_pressed == true:
+	if is_button_just_pressed == true and is_genetic_started == false:
 		var path = str(path_to_genetic + "gen" + str(int(textArea.text)) + ".txt")
 		if FileAccess.file_exists(path):
 			is_population_dead()
@@ -100,7 +103,22 @@ func generate_first_gen_procedure():
 			else:
 				print("GENERATION IS NOT DEAD!!!!")
 		is_generate_button_just_pressed = false
-				
+
+func mutate(p1):
+	print(p1.moves)
+	var random_number = randi_range(0,5)
+	
+	if random_number >= 0 and random_number <= 5:
+		var random_index = randi_range(0,len(p1.moves) - 1)
+		p1.moves[random_index] = randi_range(0,5)	
+		
+	print(p1.moves)
+	
+func start_genetic_procedure():
+	if is_genetic_button_just_pressed == true:
+		mutate(players[0])
+		is_genetic_button_just_pressed = false
+
 func start_living_process():
 	print("STARTING LIVING PROCESS")
 	is_living_process_started = true
@@ -115,6 +133,7 @@ func learn():
 	while true:
 		generate_first_gen_procedure()
 		load_generation_procedure()
+		start_genetic_procedure()
 		
 		is_population_dead()
 		if is_generation_dead == true:
