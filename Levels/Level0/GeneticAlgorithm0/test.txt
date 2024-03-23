@@ -1,0 +1,4 @@
+Player id is: 3 Reward is: 73 Executed moves are: [4, 0, 5, 5, 5, 1]
+Player id is: 0 Reward is: 75 Executed moves are: [4, 1, 5, 1, 0, 4, 5]
+Player id is: 2 Reward is: 74 Executed moves are: [3, 4, 3, 4, 1, 4, 3, 1, 5, 5]
+Player id is: 1 Reward is: 72 Executed moves are: [4, 3, 3, 1, 1, 3, 4, 3, 2, 0]

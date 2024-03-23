@@ -78,11 +78,7 @@ func move(move : int):
 func print_gen_data():
 	print(\"Player id is: \" + str(playerID)+ \" Reward is: \" + str(reward) + \" Executed moves are: \" + str(moves))
 
-func live():
-	
-	if len(moves) > 0:
-		print(\"XD\")		
-		
+func live():	
 	while true:
 		var move = randi_range(0,5)
 		previous_pos_x = pos_x

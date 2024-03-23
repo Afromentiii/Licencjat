@@ -16,8 +16,10 @@ var gen_population = 0
 var gen_last = 0
 
 func save_players_data():
+	print("SAVING DATA PROCESS...")
 	var generation = FileAccess.open(path_to_genetic + "gen" + str(gen_last) + ".txt", FileAccess.WRITE)
 	for i in players:
+		print(i.moves,i.reward)
 		var line = str(i.reward) + " "
 		for m in i.moves:
 			line += str(m) + " "
@@ -28,12 +30,21 @@ func save_players_data():
 	generation.close()
 	
 func load_players_data():
+	print("LOADING DATA PROCESS...")
+	var index = 0
 	var generation = FileAccess.open(path_to_genetic + "gen" + str(gen_last) + ".txt", FileAccess.READ)
 	while generation.eof_reached() == false:
 		var line = generation.get_line()
 		var splited_line = line.split(" ")
 		for i in range(1,len(splited_line)):
-			print(i)
+			players[index].moves.append(int(splited_line[i]))
+
+		if index < len(players):
+			players[index].reward = int(splited_line[0])
+			index += 1
+	for i in players:
+		print(i.moves, i.reward)
+	generation.close()
 			
 
 
@@ -47,12 +58,8 @@ func is_population_dead():
 			is_generation_dead = true
 func learn():
 	await get_tree().create_timer(1).timeout
-	load_players_data()
-	'''
-	await get_tree().create_timer(1).timeout
 	for i in players:
 		i.t.start(i.life, Thread.PRIORITY_HIGH)
-	'''
 	'''
 	while true:
 		if is_button_just_pressed == true:
@@ -72,6 +79,7 @@ func learn():
 			save_players_data()
 			break
 		await get_tree().create_timer(0.1).timeout
+	load_players_data()
 func _ready():
 	
 	if FileAccess.file_exists(path_to_conf):
