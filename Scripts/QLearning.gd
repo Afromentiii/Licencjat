@@ -106,7 +106,7 @@ func generate_first_gen_procedure():
 
 func mutate(p1):
 	print(p1.moves)
-	var random_number = randi_range(0,5)
+	var random_number = randi_range(0,100)
 	
 	if random_number >= 0 and random_number <= 5:
 		var random_index = randi_range(0,len(p1.moves) - 1)
