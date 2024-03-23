@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3 uid="uid://cax4mp0klk1yc"]
+
+[ext_resource type="Script" path="res://Scripts/QLearning.gd" id="1_il5dt"]
+[ext_resource type="Script" path="res://Scripts/Button.gd" id="2_hiyb4"]
+
+[node name="GeneticAlgorithm" type="Node2D"]
+script = ExtResource("1_il5dt")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 256.0
+offset_top = -250.0
+offset_right = 296.0
+offset_bottom = -210.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Button" type="Button" parent="Control/VBoxContainer"]
+layout_mode = 2
+text = "LOAD GENERATION"
+script = ExtResource("2_hiyb4")
+
+[node name="TextEdit" type="TextEdit" parent="Control/VBoxContainer/Button"]
+layout_mode = 2
+offset_left = -88.0
+offset_top = 36.0
+offset_right = 261.0
+offset_bottom = 70.0
+text = "path"
+
+[connection signal="pressed" from="Control/VBoxContainer/Button" to="Control/VBoxContainer/Button" method="_on_pressed"]

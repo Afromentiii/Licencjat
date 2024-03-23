@@ -1,9 +1,9 @@
 [gd_scene load_steps=15 format=3 uid="uid://dr8ojjpf3tl1o"]
 
-[ext_resource type="Texture2D" uid="uid://vjh6tf1p0ivg" path="res://Images/Player/ham.png" id="1_f5gg4"]
-[ext_resource type="Texture2D" uid="uid://c025oeg7qnj05" path="res://Images/Player/test.png" id="2_tnck4"]
-[ext_resource type="Texture2D" uid="uid://c7nttvm4xgmuj" path="res://Images/Player/left2.png" id="3_mwvfn"]
-[ext_resource type="Texture2D" uid="uid://d1raj3l4p0v5n" path="res://Images/Player/left.png" id="4_p6upc"]
+[ext_resource type="Texture2D" uid="uid://vjh6tf1p0ivg" path="res://Images/ham.png" id="1_f5gg4"]
+[ext_resource type="Texture2D" uid="uid://c025oeg7qnj05" path="res://Images/test.png" id="2_tnck4"]
+[ext_resource type="Texture2D" uid="uid://c7nttvm4xgmuj" path="res://Images/left2.png" id="3_mwvfn"]
+[ext_resource type="Texture2D" uid="uid://d1raj3l4p0v5n" path="res://Images/left.png" id="4_p6upc"]
 
 [sub_resource type="GDScript" id="GDScript_5cbp6"]
 script/source = "extends CharacterBody2D
@@ -37,11 +37,7 @@ var pos_x = 0
 var life = Callable(self, \"live\")
 var t = Thread.new()
 
-		
-func print_gen_data():
-	print(\"Player id is: \" + str(playerID)+ \" Reward is: \" + str(reward) + \" Executed moves are: \" + str(moves))
-
-func live():
+func move(move : int):
 	#index_short_right = 0
 	#index_mid_right = 1
 	#index_high_right = 2
@@ -51,45 +47,53 @@ func live():
 	#index_high_jump = 5
 	
 	#do_nothing = 6
+	if move == 0:
+		is_moving_right = true
+		await get_tree().create_timer(1).timeout
+		is_moving_right = false
+	elif move == 1:
+		is_moving_right = true
+		await get_tree().create_timer(0.25).timeout
+		is_moving_right = false
+	elif move == 2:
+		is_moving_right = true
+		await get_tree().create_timer(0.5).timeout
+		is_moving_right = false
+	elif move == 3:
+		is_jumping = true
+		is_moving_right = true
+		await get_tree().create_timer(0.1).timeout
+		is_moving_right = false
+	elif move == 4:
+		is_jumping = true
+		is_moving_right = true
+		await get_tree().create_timer(0.25).timeout
+		is_moving_right = false
+	elif move == 5:
+		is_jumping = true
+		is_moving_right = true
+		await get_tree().create_timer(0.5).timeout
+		is_moving_right = false	
+		
+func print_gen_data():
+	print(\"Player id is: \" + str(playerID)+ \" Reward is: \" + str(reward) + \" Executed moves are: \" + str(moves))
+
+func live():
+	
+	if len(moves) > 0:
+		print(\"XD\")		
+		
 	while true:
 		var move = randi_range(0,5)
-		var time = randf_range(0.2, 0.5)
 		previous_pos_x = pos_x
 		
-		if move == 0:
-			is_moving_right = true
-			await get_tree().create_timer(1).timeout
-			is_moving_right = false
-		elif move == 1:
-			is_moving_right = true
-			await get_tree().create_timer(0.25).timeout
-			is_moving_right = false
-		elif move == 2:
-			is_moving_right = true
-			await get_tree().create_timer(0.5).timeout
-			is_moving_right = false
-		elif move == 3:
-			is_jumping = true
-			is_moving_right = true
-			await get_tree().create_timer(0.1).timeout
-			is_moving_right = false
-		elif move == 4:
-			is_jumping = true
-			is_moving_right = true
-			await get_tree().create_timer(0.25).timeout
-			is_moving_right = false
-		elif move == 5:
-			is_jumping = true
-			is_moving_right = true
-			await get_tree().create_timer(0.5).timeout
-			is_moving_right = false
-		
-		await get_tree().create_timer(0.75).timeout
+		move(move)
+		await get_tree().create_timer(0.55).timeout
 		move_end_pos_x = pos_x
 		moves.append(move)
 		
 		if move_end_pos_x > previous_pos_x:
-			reward += 10
+			reward += int(abs(move_end_pos_x - previous_pos_x) / 10)
 			iter_stacked_counter = 0
 		else:
 			iter_stacked_counter += 1
@@ -115,7 +119,7 @@ func respawn():
 	print_gen_data()
 	self.move_end_pos_x = 0
 	self.previous_pos_x = 0
-	self.moves.clear()
+
 	
 func enemyDMG():
 	$healthBar.value -= 30
