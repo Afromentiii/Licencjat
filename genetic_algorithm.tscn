@@ -37,7 +37,9 @@ offset_left = -2.0
 offset_top = 39.0
 offset_right = 353.0
 offset_bottom = 70.0
-text = "path"
+text = "Input ID of GEN
+
+"
 
 [connection signal="pressed" from="Control/VBoxContainer/GenerateFirstGeneration" to="Control/VBoxContainer/GenerateFirstGeneration" method="_on_pressed"]
 [connection signal="pressed" from="Control/VBoxContainer/Button" to="Control/VBoxContainer/Button" method="_on_pressed"]

@@ -22,9 +22,9 @@ var lines = []
 var gen_population = 0
 var gen_last = 0
 
-func save_players_data():
+func save_players_data(gen):
 	print("SAVING DATA PROCESS...")
-	var generation = FileAccess.open(path_to_genetic + "gen" + str(gen_last) + ".txt", FileAccess.WRITE)
+	var generation = FileAccess.open(path_to_genetic + "gen" + str(gen) + ".txt", FileAccess.WRITE)
 	for i in players:
 		print(i.moves,i.reward)
 		var line = str(i.reward) + " "
@@ -33,25 +33,28 @@ func save_players_data():
 		generation.store_line(line)
 		i.moves.clear()
 		i.reward = 0
-		
+	
 	generation.close()
 	
-func load_players_data():
+func load_players_data(path):
 	print("LOADING DATA PROCESS...")
 	var index = 0
-	var generation = FileAccess.open(path_to_genetic + "gen" + str(gen_last) + ".txt", FileAccess.READ)
-	while generation.eof_reached() == false:
-		var line = generation.get_line()
-		var splited_line = line.split(" ")
-		for i in range(1,len(splited_line) - 1):
-			players[index].moves.append(int(splited_line[i]))
+	if FileAccess.file_exists(path):
+		var generation = FileAccess.open(path, FileAccess.READ)
+		while generation.eof_reached() == false:
+			var line = generation.get_line()
+			var splited_line = line.split(" ")
+			for i in range(1,len(splited_line) - 1):
+				players[index].moves.append(int(splited_line[i]))
 
-		if index < len(players):
-			players[index].reward = int(splited_line[0])
-			index += 1
-	for i in players:
-		print(i.moves, i.reward)
-	generation.close()
+			if index < len(players):
+				players[index].reward = int(splited_line[0])
+				index += 1
+		for i in players:
+			print(i.moves, i.reward)
+		generation.close()
+	else:
+		print("File does not exist!")
 			
 func is_population_dead():
 	for i in players:
@@ -64,14 +67,17 @@ func is_population_dead():
 			
 func load_generation_procedure():
 	if is_button_just_pressed == true:
-		if FileAccess.file_exists(textArea.text):
+		var path = str(path_to_genetic + "gen" + str(int(textArea.text)) + ".txt")
+		if FileAccess.file_exists(path):
 			is_population_dead()
 			if is_generation_dead == true:
 				is_generation_dead = false
-				load_players_data()
+				load_players_data(path)
 				await get_tree().create_timer(0.1).timeout
 				for i in players:
 					i.t.start(i.loading, Thread.PRIORITY_HIGH)
+		else:
+			print("File does not exist!")
 		is_button_just_pressed = false
 		
 func generate_first_gen_procedure():
@@ -79,14 +85,10 @@ func generate_first_gen_procedure():
 		if FileAccess.file_exists(path_to_genetic + "gen1.txt"):
 			print("File exits!")
 		else: 
-			if is_living_process_started == false:
+			is_population_dead()
+			if is_living_process_started == false and  is_generation_dead == true:
 				start_living_process()
 				is_living_process_started = true
-			is_population_dead()
-			if is_generation_dead == true:
-				is_generation_dead = false
-				print("ALL DIED :D")
-				save_players_data()
 		is_generate_button_just_pressed = false
 				
 func start_living_process():
@@ -95,15 +97,18 @@ func start_living_process():
 		i.t.start(i.life, Thread.PRIORITY_HIGH)
 	
 func learn():
-	pass
-	'''
 	await get_tree().create_timer(1).timeout
-	start_living_process()
-	'''
-	
 
 	while true:
+		generate_first_gen_procedure()
+		load_generation_procedure()
 		
+		is_population_dead()
+		if is_generation_dead == true and is_living_process_started == true:
+			is_generation_dead = false
+			is_living_process_started = false
+			print("ALL DIED :D")
+			save_players_data(gen_last)
 		await get_tree().create_timer(0.1).timeout
 	
 
@@ -120,7 +125,6 @@ func learn():
 	load_players_data()
 	'''
 func _ready():
-	
 	if FileAccess.file_exists(path_to_conf):
 		var conf = FileAccess.open(path_to_conf, FileAccess.READ)
 		while conf.eof_reached() == false:

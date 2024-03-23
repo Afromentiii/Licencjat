@@ -43,6 +43,7 @@ func just_load_and_execute_moves():
 	for i in moves:
 		move(i)
 		await get_tree().create_timer(0.55).timeout
+	
 	is_dead = true
 
 func move_reward(move : int):
@@ -108,7 +109,7 @@ func live():
 		var move = randi_range(0,5)
 		previous_pos_x = pos_x
 		moves.append(move)
-		
+
 		move(move)
 		await get_tree().create_timer(0.55).timeout
 		move_end_pos_x = pos_x
@@ -122,6 +123,8 @@ func live():
 			if iter_stacked_counter == 5:
 				reward -= 200
 				respawn()
+				
+	t.wait_to_finish()
 			
 func _ready():
 	self.position = get_parent().spawnPos
