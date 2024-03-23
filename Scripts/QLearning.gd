@@ -13,6 +13,7 @@ var is_generation_loaded: bool = false
 var is_button_just_pressed : bool = false
 var is_generate_button_just_pressed : bool = false
 var is_living_process_started : bool = false
+var is_saving : bool = false
 
 var call = Callable(self, "learn")
 var players = []
@@ -75,7 +76,12 @@ func load_generation_procedure():
 				load_players_data(path)
 				await get_tree().create_timer(0.1).timeout
 				for i in players:
+					i.t = Thread.new()
+					i.is_dead = false
 					i.t.start(i.loading, Thread.PRIORITY_HIGH)
+				is_generation_loaded = true
+			else:
+				print("GENERATION IS NOT DEAD")
 		else:
 			print("File does not exist!")
 		is_button_just_pressed = false
@@ -84,15 +90,22 @@ func generate_first_gen_procedure():
 	if is_generate_button_just_pressed == true:
 		if FileAccess.file_exists(path_to_genetic + "gen1.txt"):
 			print("File exits!")
-		else: 
+		else:
 			is_population_dead()
-			if is_living_process_started == false and  is_generation_dead == true:
-				start_living_process()
-				is_living_process_started = true
+			if is_generation_dead == true:
+				is_generation_dead = false
+				if is_living_process_started == false:
+					start_living_process()
+					is_saving = true
+			else:
+				print("GENERATION IS NOT DEAD!!!!")
 		is_generate_button_just_pressed = false
 				
 func start_living_process():
+	print("STARTING LIVING PROCESS")
+	is_living_process_started = true
 	for i in players:
+		i.t = Thread.new()
 		i.is_dead = false
 		i.t.start(i.life, Thread.PRIORITY_HIGH)
 	
@@ -104,12 +117,11 @@ func learn():
 		load_generation_procedure()
 		
 		is_population_dead()
-		if is_generation_dead == true and is_living_process_started == true:
-			is_generation_dead = false
-			is_living_process_started = false
-			print("ALL DIED :D")
-			save_players_data(gen_last)
-		await get_tree().create_timer(0.1).timeout
+		if is_generation_dead == true:
+			if is_saving == true:
+				save_players_data(gen_last)
+				is_saving = false
+		await get_tree().create_timer(0.01).timeout
 	
 
 	'''
