@@ -36,7 +36,7 @@ func load_players_data():
 	while generation.eof_reached() == false:
 		var line = generation.get_line()
 		var splited_line = line.split(" ")
-		for i in range(1,len(splited_line)):
+		for i in range(1,len(splited_line) - 1):
 			players[index].moves.append(int(splited_line[i]))
 
 		if index < len(players):

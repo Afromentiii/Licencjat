@@ -37,6 +37,21 @@ var pos_x = 0
 var life = Callable(self, \"live\")
 var t = Thread.new()
 
+func move_reward(move : int):
+	
+	if move == 0:
+		reward += 5
+	elif move == 1:
+		reward += 25
+	elif move == 2:
+		reward += 50
+	elif move == 3:
+		reward += 5
+	elif move == 4:
+		reward += 25
+	elif move == 5:
+		reward += 50
+
 func move(move : int):
 	#index_short_right = 0
 	#index_mid_right = 1
@@ -49,7 +64,7 @@ func move(move : int):
 	#do_nothing = 6
 	if move == 0:
 		is_moving_right = true
-		await get_tree().create_timer(1).timeout
+		await get_tree().create_timer(0.1).timeout
 		is_moving_right = false
 	elif move == 1:
 		is_moving_right = true
@@ -89,7 +104,7 @@ func live():
 		moves.append(move)
 		
 		if move_end_pos_x > previous_pos_x:
-			reward += int(abs(move_end_pos_x - previous_pos_x) / 10)
+			move_reward(move)
 			iter_stacked_counter = 0
 		else:
 			iter_stacked_counter += 1
