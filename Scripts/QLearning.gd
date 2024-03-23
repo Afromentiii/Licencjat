@@ -1,17 +1,23 @@
 extends Node2D
 
-var call = Callable(self, "learn")
 @export var path_to_conf = "res://Levels/Level0/GeneticAlgorithm0/conf.txt"
 @export var path_to_genetic = "res://Levels/Level0/GeneticAlgorithm0/"
+
 @onready var load_gen_button = $Control/VBoxContainer/Button
 @onready var textArea = $Control/VBoxContainer/Button/TextEdit
+@onready var generate_first_gen = $Control/VBoxContainer/GenerateFirstGeneration
 
-var players = []
-var player_is_dead_counter = 0
-var move : int = 0
+
 var is_generation_dead : bool = false
 var is_generation_loaded: bool = false
 var is_button_just_pressed : bool = false
+var is_generate_button_just_pressed : bool = false
+var is_living_process_started : bool = false
+
+var call = Callable(self, "learn")
+var players = []
+var player_is_dead_counter = 0
+var move : int = 0
 var lines = []
 var gen_population = 0
 var gen_last = 0
@@ -67,22 +73,39 @@ func load_generation_procedure():
 				for i in players:
 					i.t.start(i.loading, Thread.PRIORITY_HIGH)
 		is_button_just_pressed = false
-
+		
+func generate_first_gen_procedure():
+	if is_generate_button_just_pressed == true:
+		if FileAccess.file_exists(path_to_genetic + "gen1.txt"):
+			print("File exits!")
+		else: 
+			if is_living_process_started == false:
+				start_living_process()
+				is_living_process_started = true
+			is_population_dead()
+			if is_generation_dead == true:
+				is_generation_dead = false
+				print("ALL DIED :D")
+				save_players_data()
+		is_generate_button_just_pressed = false
+				
 func start_living_process():
 	for i in players:
 		i.is_dead = false
 		i.t.start(i.life, Thread.PRIORITY_HIGH)
 	
 func learn():
+	pass
 	'''
 	await get_tree().create_timer(1).timeout
 	start_living_process()
 	'''
+	
 
 	while true:
-		load_generation_procedure()
+		
 		await get_tree().create_timer(0.1).timeout
-
+	
 
 	'''
 	while true:
