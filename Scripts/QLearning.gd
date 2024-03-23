@@ -5,6 +5,7 @@ var call = Callable(self, "learn")
 @export var path_to_genetic = "res://Levels/Level0/GeneticAlgorithm0/"
 @onready var load_gen_button = $Control/VBoxContainer/Button
 @onready var textArea = $Control/VBoxContainer/Button/TextEdit
+
 var players = []
 var player_is_dead_counter = 0
 var move : int = 0
