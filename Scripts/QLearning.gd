@@ -46,8 +46,6 @@ func load_players_data():
 		print(i.moves, i.reward)
 	generation.close()
 			
-
-
 func is_population_dead():
 	for i in players:
 		if i.is_dead == true:
@@ -56,20 +54,35 @@ func is_population_dead():
 			player_is_dead_counter = 0
 		if player_is_dead_counter == len(players):
 			is_generation_dead = true
-func learn():
-	await get_tree().create_timer(1).timeout
+			
+func load_generation_procedure():
+	if is_button_just_pressed == true:
+		if FileAccess.file_exists(textArea.text):
+			is_population_dead()
+			if is_generation_dead == true:
+				is_generation_dead = false
+				load_players_data()
+				await get_tree().create_timer(0.1).timeout
+				for i in players:
+					i.t.start(i.loading, Thread.PRIORITY_HIGH)
+		is_button_just_pressed = false
+
+func start_living_process():
 	for i in players:
+		i.is_dead = false
 		i.t.start(i.life, Thread.PRIORITY_HIGH)
+	
+func learn():
 	'''
+	await get_tree().create_timer(1).timeout
+	start_living_process()
+	'''
+
 	while true:
-		if is_button_just_pressed == true:
-			if FileAccess.file_exists(textArea.text):
-				var generation = FileAccess.open(textArea.text, FileAccess.READ)
-				while generation.eof_reached() == false:
-					var line = generation.get_line()
-					var splited_line = line.split(";")
-			is_button_just_pressed = false
+		load_generation_procedure()
 		await get_tree().create_timer(0.1).timeout
+
+
 	'''
 	while true:
 		is_population_dead()
@@ -79,7 +92,9 @@ func learn():
 			save_players_data()
 			break
 		await get_tree().create_timer(0.1).timeout
+		
 	load_players_data()
+	'''
 func _ready():
 	
 	if FileAccess.file_exists(path_to_conf):
@@ -100,6 +115,7 @@ func _ready():
 		p.respawnPosition = get_parent().spawnPos
 		p.playerID = i
 		p.get_node("Index").text = str(i)
+		p.is_dead = true
 		players.append(p)
 
 	var t = Thread.new()
