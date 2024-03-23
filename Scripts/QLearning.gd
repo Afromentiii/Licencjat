@@ -156,6 +156,10 @@ func _ready():
 		p.playerID = i
 		p.get_node("Index").text = str(i)
 		p.is_dead = true
+		var red = randf_range(0,1)
+		var green = randf_range(0,1)
+		var blue = randf_range(0,1)
+		p.modulate = Color(red,green,blue)
 		players.append(p)
 
 	var t = Thread.new()
