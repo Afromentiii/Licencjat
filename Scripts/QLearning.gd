@@ -25,6 +25,7 @@ var move : int = 0
 var lines = []
 var gen_population = 0
 var gen_last = 0
+var genetic_iterations = 0
 
 func save_players_data(gen):
 	print("SAVING DATA PROCESS...")
@@ -84,7 +85,7 @@ func load_generation_procedure():
 					i.t.start(i.loading, Thread.PRIORITY_HIGH)
 				is_generation_loaded = true
 			else:
-				print("GENERATION IS NOT DEAD")
+				print("GENERATION IS NOT DEAD!!!")
 		else:
 			print("File does not exist!")
 		is_button_just_pressed = false
@@ -116,16 +117,23 @@ func mutate(p1):
 	
 func start_genetic_procedure():
 	if is_genetic_button_just_pressed == true:
-		mutate(players[0])
+		if FileAccess.file_exists(path_to_genetic + "gen" + str(gen_last) + "txt"):
+			if genetic_iterations > 0 and is_genetic_started == false:
+				is_population_dead()
+				if is_generation_dead == true:
+					print("GENETIC PROCESS IS STARTING...")
+			else:
+				print("ITERATION NUMBER CAN T BE NEGATIVE!!!!")
 		is_genetic_button_just_pressed = false
 
 func start_living_process():
-	print("STARTING LIVING PROCESS")
+	print("STARTING LIVING PROCESS...")
 	is_living_process_started = true
 	for i in players:
 		i.t = Thread.new()
 		i.is_dead = false
 		i.t.start(i.life, Thread.PRIORITY_HIGH)
+		await get_tree().create_timer(0.05).timeout
 	
 func learn():
 	await get_tree().create_timer(1).timeout
@@ -140,7 +148,7 @@ func learn():
 			if is_saving == true:
 				save_players_data(gen_last)
 				is_saving = false
-		await get_tree().create_timer(0.01).timeout
+		await get_tree().create_timer(0.1).timeout
 	
 
 	'''
