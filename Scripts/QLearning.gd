@@ -117,7 +117,9 @@ func mutate(p1):
 	
 func start_genetic_procedure():
 	if is_genetic_button_just_pressed == true:
-		if FileAccess.file_exists(path_to_genetic + "gen" + str(gen_last) + "txt"):
+		genetic_iterations = int(textArea.text)
+		print(path_to_genetic + "gen" + str(gen_last) + "txt")
+		if FileAccess.file_exists(path_to_genetic + "gen" + str(gen_last) + ".txt"):
 			if genetic_iterations > 0 and is_genetic_started == false:
 				is_population_dead()
 				if is_generation_dead == true:
