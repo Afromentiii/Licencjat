@@ -122,7 +122,7 @@ func mutate(p1):
 func start_genetic_procedure():
 	if is_genetic_button_just_pressed == true and is_genetic_started == false:
 		genetic_iterations = int(textArea.text)
-		print(genetic_iterations)
+		#print(genetic_iterations)
 		if FileAccess.file_exists(path_to_genetic + "gen" + str(gen_last) + ".txt") :
 			if genetic_iterations > 0:
 				is_population_dead()
@@ -132,7 +132,8 @@ func start_genetic_procedure():
 					is_saving = true
 					genetic_iterations_saved = genetic_iterations
 					gen_last += 1
-					print("GENETIC PROCESS IS STARTING...")
+					genetic_iter = 1
+					print("GENETIC PROCESS IS STARTING...", "GENETIC ITERATIONS SAVED: ", genetic_iterations_saved)
 					start_living_process()
 				else:
 					print("GENERATION IS NOT DEAD!!!!")
@@ -173,7 +174,8 @@ func learn():
 				save_players_data(gen_last)
 				is_saving = false
 			if is_genetic_started == true:
-				genetic_iter += 1
+				print("GENETIC ITER IS ", genetic_iter)
+				get_tree().create_timer(0.1).timeout
 				if genetic_iter < genetic_iterations_saved:
 					is_generation_dead = false
 					await get_tree().create_timer(1).timeout
@@ -182,6 +184,7 @@ func learn():
 					is_saving = true
 					genetic_iter += 1
 				else:
+					get_tree().create_timer(0.1).timeout
 					genetic_iter = 0
 					is_genetic_started = false
 					genetic_iterations_saved = 0
