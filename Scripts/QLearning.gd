@@ -17,6 +17,7 @@ var is_living_process_started : bool = false
 var is_saving : bool = false
 var is_genetic_button_just_pressed : bool = false
 var is_genetic_started : bool = false
+var arrays_are_empty : bool = false
 
 var call = Callable(self, "learn")
 var players = []
@@ -26,6 +27,9 @@ var lines = []
 var gen_population = 0
 var gen_last = 0
 var genetic_iterations = 0
+var genetic_iterations_saved = 0
+var genetic_iter = 0
+var player_moves_is_empty_counter = 0
 
 func save_players_data(gen):
 	print("SAVING DATA PROCESS...")
@@ -116,14 +120,22 @@ func mutate(p1):
 	print(p1.moves)
 	
 func start_genetic_procedure():
-	if is_genetic_button_just_pressed == true:
+	if is_genetic_button_just_pressed == true and is_genetic_started == false:
 		genetic_iterations = int(textArea.text)
-		print(path_to_genetic + "gen" + str(gen_last) + "txt")
-		if FileAccess.file_exists(path_to_genetic + "gen" + str(gen_last) + ".txt"):
-			if genetic_iterations > 0 and is_genetic_started == false:
+		print(genetic_iterations)
+		if FileAccess.file_exists(path_to_genetic + "gen" + str(gen_last) + ".txt") :
+			if genetic_iterations > 0:
 				is_population_dead()
 				if is_generation_dead == true:
+					is_genetic_started = true
+					is_generation_dead = false
+					is_saving = true
+					genetic_iterations_saved = genetic_iterations
+					gen_last += 1
 					print("GENETIC PROCESS IS STARTING...")
+					start_living_process()
+				else:
+					print("GENERATION IS NOT DEAD!!!!")
 			else:
 				print("ITERATION NUMBER CAN T BE NEGATIVE!!!!")
 		is_genetic_button_just_pressed = false
@@ -132,11 +144,21 @@ func start_living_process():
 	print("STARTING LIVING PROCESS...")
 	is_living_process_started = true
 	for i in players:
+		await get_tree().create_timer(0.05).timeout
 		i.t = Thread.new()
 		i.is_dead = false
 		i.t.start(i.life, Thread.PRIORITY_HIGH)
-		await get_tree().create_timer(0.05).timeout
-	
+
+func check_if_moves_are_empty():
+	for i in players:
+		if i.moves.is_empty() == true:
+			player_moves_is_empty_counter += 1
+		else:
+			player_moves_is_empty_counter = 0
+		if player_moves_is_empty_counter == len(players):
+			arrays_are_empty = true
+			
+
 func learn():
 	await get_tree().create_timer(1).timeout
 
@@ -150,7 +172,20 @@ func learn():
 			if is_saving == true:
 				save_players_data(gen_last)
 				is_saving = false
-		await get_tree().create_timer(0.1).timeout
+			if is_genetic_started == true:
+				genetic_iter += 1
+				if genetic_iter < genetic_iterations_saved:
+					is_generation_dead = false
+					await get_tree().create_timer(1).timeout
+					start_living_process()
+					gen_last += 1
+					is_saving = true
+					genetic_iter += 1
+				else:
+					genetic_iter = 0
+					is_genetic_started = false
+					genetic_iterations_saved = 0
+		await get_tree().create_timer(0.01).timeout
 	
 
 	'''
@@ -190,7 +225,6 @@ func _ready():
 		var blue = randf_range(0,1)
 		p.modulate = Color(red,green,blue)
 		players.append(p)
-
 	var t = Thread.new()
 	t.start(call,Thread.PRIORITY_HIGH)
 	
