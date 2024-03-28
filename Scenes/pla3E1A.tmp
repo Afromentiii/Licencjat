@@ -40,7 +40,6 @@ var t : Thread
 
 func just_load_and_execute_moves():
 	#print(\"LOADING AND EXECUTING MOVES\")
-	
 	for i in moves:
 		move(i)
 		await get_tree().create_timer(0.55).timeout
@@ -103,21 +102,12 @@ func move(move : int):
 		is_moving_right = false	
 		
 func print_gen_data():
-	print(\"Player distance is: \" + str(distance_after_death) + \" Player id is: \" + str(playerID)+ \" Reward is: \" + str(reward) + \" Executed moves are: \" + str(moves))
+	print(\"Player distance is:\" + str(distance_after_death) + \"Player id is: \" + str(playerID)+ \" Reward is: \" + str(reward) + \" Executed moves are: \" + str(moves))
 
-func live():
-	if moves.is_empty() == false:
-		for move in moves:
-			previous_pos_x = pos_x
-			move(move)
-			await get_tree().create_timer(0.5).timeout
-			move_end_pos_x = pos_x
-			
-			if move_end_pos_x > previous_pos_x:
-				move_reward(move)
-			
+func live():	
 	while true:
 		if is_dead == true:
+			distance_after_death = abs(int(respawnPosition.x - move_end_pos_x))
 			break	
 			
 		var move = randi_range(0,5)
@@ -129,7 +119,6 @@ func live():
 		move_end_pos_x = pos_x
 		
 		if move_end_pos_x > previous_pos_x:
-			distance_after_death += abs(respawnPosition.distance_to(Vector2(move_end_pos_x, 0)))
 			move_reward(move)
 			iter_stacked_counter = 0
 		else:
@@ -160,7 +149,7 @@ func respawn():
 	
 	self.move_end_pos_x = 0
 	self.previous_pos_x = 0
-	self.distance_after_death = 0
+	self.distance_after_dead = 0
 
 	
 func enemyDMG():

@@ -8,7 +8,6 @@ extends Node2D
 @onready var generate_first_gen = $Control/VBoxContainer/GenerateFirstGeneration
 @onready var start_genetic_algorithm = $Control/VBoxContainer/StartGenetic
 
-
 var is_generation_dead : bool = false
 var is_generation_loaded: bool = false
 var is_button_just_pressed : bool = false
@@ -127,6 +126,7 @@ func start_genetic_procedure():
 			if genetic_iterations > 0:
 				is_population_dead()
 				if is_generation_dead == true:
+					#find_the_best_player_and_generate_population()
 					is_genetic_started = true
 					is_generation_dead = false
 					is_saving = true
@@ -158,7 +158,37 @@ func check_if_moves_are_empty():
 			player_moves_is_empty_counter = 0
 		if player_moves_is_empty_counter == len(players):
 			arrays_are_empty = true
-			
+
+func compare_p1_p2_reward(a, b):
+	if a.reward > b.reward:
+		return true
+	return false
+
+func find_the_best_player_and_generate_population():
+	load_players_data(path_to_genetic + "gen" + str(gen_last) + ".txt")
+	players.sort_custom(compare_p1_p2_reward)
+	
+	var steps = gen_population / 2
+	var index = 0
+	var best_players_move_array = players[0].moves
+	
+	for i in range(0,steps):
+		players[index].moves  = best_players_move_array.duplicate()
+		for pop_counter in range(0,i):
+			players[index].moves.pop_back()
+		index += 1
+		
+	for i in range(steps,len(players)):
+		players[index].moves.clear()
+		index += 1
+		
+	print("NEW POPULATION IS: ")
+	for i in players:
+		i.reward = 0
+		print(i.moves)
+		
+		
+
 
 func learn():
 	await get_tree().create_timer(1).timeout
@@ -178,6 +208,7 @@ func learn():
 				get_tree().create_timer(0.1).timeout
 				if genetic_iter < genetic_iterations_saved:
 					is_generation_dead = false
+					#find_the_best_player_and_generate_population()
 					await get_tree().create_timer(1).timeout
 					start_living_process()
 					gen_last += 1
@@ -231,6 +262,6 @@ func _ready():
 	var t = Thread.new()
 	t.start(call,Thread.PRIORITY_HIGH)
 	
-func _process(delta):
+func _process(_delta):
 	pass
 
