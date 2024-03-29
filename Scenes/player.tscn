@@ -1,9 +1,9 @@
 [gd_scene load_steps=15 format=3 uid="uid://dr8ojjpf3tl1o"]
 
-[ext_resource type="Texture2D" uid="uid://vjh6tf1p0ivg" path="res://Images/Player/ham.png" id="1_f5gg4"]
+[ext_resource type="Texture2D" uid="uid://vjh6tf1p0ivg" path="res://Images/ham.png" id="1_f5gg4"]
 [ext_resource type="Texture2D" uid="uid://c025oeg7qnj05" path="res://Images/test.png" id="2_tnck4"]
-[ext_resource type="Texture2D" uid="uid://c7nttvm4xgmuj" path="res://Images/Player/left2.png" id="3_mwvfn"]
-[ext_resource type="Texture2D" uid="uid://d1raj3l4p0v5n" path="res://Images/Player/left.png" id="4_p6upc"]
+[ext_resource type="Texture2D" uid="uid://c7nttvm4xgmuj" path="res://Images/left2.png" id="3_mwvfn"]
+[ext_resource type="Texture2D" uid="uid://d1raj3l4p0v5n" path="res://Images/left.png" id="4_p6upc"]
 
 [sub_resource type="GDScript" id="GDScript_5cbp6"]
 script/source = "extends CharacterBody2D
@@ -47,8 +47,9 @@ func just_load_and_execute_moves():
 		await get_tree().create_timer(0.75).timeout
 	moves.clear()
 	
-	await get_tree().create_timer(0.5).timeout
+	await get_tree().create_timer(1).timeout
 	is_dead = true
+	respawn()
 	t.wait_to_finish()
 
 func move_reward(move : int):
