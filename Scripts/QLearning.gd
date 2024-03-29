@@ -30,6 +30,12 @@ var genetic_iterations_saved = 0
 var genetic_iter = 0
 var player_moves_is_empty_counter = 0
 
+func overide_conf():
+	var conf = FileAccess.open(path_to_conf, FileAccess.WRITE)
+	conf.store_line("GENERATION_POPULATION " + str(gen_population))
+	conf.store_line("LAST_GENERATION " + str(gen_last))
+	conf.close()
+
 func save_players_data(gen):
 	print("SAVING DATA PROCESS...")
 	var generation = FileAccess.open(path_to_genetic + "gen" + str(gen) + ".txt", FileAccess.WRITE)
@@ -83,6 +89,8 @@ func load_generation_procedure():
 				load_players_data(path)
 				await get_tree().create_timer(0.1).timeout
 				for i in players:
+					i.position = i.respawnPosition
+					await get_tree().create_timer(0.06).timeout
 					i.t = Thread.new()
 					i.is_dead = false
 					i.t.start(i.loading, Thread.PRIORITY_HIGH)
@@ -126,12 +134,13 @@ func start_genetic_procedure():
 			if genetic_iterations > 0:
 				is_population_dead()
 				if is_generation_dead == true:
-					#find_the_best_player_and_generate_population()
+					find_the_best_player_and_generate_population()
 					is_genetic_started = true
 					is_generation_dead = false
 					is_saving = true
 					genetic_iterations_saved = genetic_iterations
 					gen_last += 1
+					overide_conf()
 					genetic_iter = 1
 					print("GENETIC PROCESS IS STARTING...", "GENETIC ITERATIONS SAVED: ", genetic_iterations_saved)
 					start_living_process()
@@ -145,6 +154,7 @@ func start_living_process():
 	print("STARTING LIVING PROCESS...")
 	is_living_process_started = true
 	for i in players:
+		i.position = i.respawnPosition
 		await get_tree().create_timer(0.05).timeout
 		i.t = Thread.new()
 		i.is_dead = false
@@ -171,15 +181,18 @@ func find_the_best_player_and_generate_population():
 	var steps = gen_population / 2
 	var index = 0
 	var best_players_move_array = players[0].moves
-	
-	for i in range(0,steps):
+	var best_players_move_array2 = players[1].moves
+
+	for i in range(0, steps):
 		players[index].moves  = best_players_move_array.duplicate()
-		for pop_counter in range(0,i):
+		for pop_counter in range(i,steps):
 			players[index].moves.pop_back()
 		index += 1
 		
-	for i in range(steps,len(players)):
-		players[index].moves.clear()
+	for i in range(steps, len(players)):
+		players[index].moves  = best_players_move_array.duplicate()
+		for pop_counter in range(0,randi_range(1,4)):
+			players[index].moves.pop_back()
 		index += 1
 		
 	print("NEW POPULATION IS: ")
@@ -202,18 +215,21 @@ func learn():
 		if is_generation_dead == true:
 			if is_saving == true:
 				save_players_data(gen_last)
+				await get_tree().create_timer(1).timeout
 				is_saving = false
 			if is_genetic_started == true:
 				print("GENETIC ITER IS ", genetic_iter)
 				get_tree().create_timer(0.1).timeout
 				if genetic_iter < genetic_iterations_saved:
 					is_generation_dead = false
-					#find_the_best_player_and_generate_population()
+					find_the_best_player_and_generate_population()
 					await get_tree().create_timer(1).timeout
 					start_living_process()
 					gen_last += 1
+					overide_conf()
 					is_saving = true
 					genetic_iter += 1
+					
 				else:
 					get_tree().create_timer(0.1).timeout
 					genetic_iter = 0

@@ -39,15 +39,16 @@ var loading = Callable(self,\"just_load_and_execute_moves\")
 var t : Thread
 
 func just_load_and_execute_moves():
-	#print(\"LOADING AND EXECUTING MOVES\")
+	print(\"LOADING AND EXECUTING MOVES\")
+	print(moves)
 	
 	for i in moves:
 		move(i)
-		await get_tree().create_timer(0.55).timeout
+		await get_tree().create_timer(0.75).timeout
 	moves.clear()
 	
+	await get_tree().create_timer(0.5).timeout
 	is_dead = true
-	self.position = respawnPosition
 	t.wait_to_finish()
 
 func move_reward(move : int):
@@ -110,22 +111,22 @@ func live():
 		for move in moves:
 			previous_pos_x = pos_x
 			move(move)
-			await get_tree().create_timer(0.5).timeout
+			await get_tree().create_timer(0.75).timeout
 			move_end_pos_x = pos_x
 			
 			if move_end_pos_x > previous_pos_x:
 				move_reward(move)
-			
+	
+	await get_tree().create_timer(1).timeout		
 	while true:
-		if is_dead == true:
-			break	
-			
 		var move = randi_range(0,5)
 		previous_pos_x = pos_x
 		moves.append(move)
 
 		move(move)
-		await get_tree().create_timer(0.55).timeout
+		await get_tree().create_timer(1).timeout
+		await get_tree().create_timer(1).timeout
+	
 		move_end_pos_x = pos_x
 		
 		if move_end_pos_x > previous_pos_x:
@@ -138,8 +139,12 @@ func live():
 			if iter_stacked_counter == 5:
 				reward -= 200
 				respawn()
-	
-	await get_tree().create_timer(0.5).timeout
+		
+		if is_dead == true:
+			break
+				
+				
+	await get_tree().create_timer(1).timeout				
 	t.wait_to_finish()
 			
 func _ready():
