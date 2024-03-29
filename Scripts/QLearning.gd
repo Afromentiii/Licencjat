@@ -93,7 +93,7 @@ func load_generation_procedure():
 					await get_tree().create_timer(0.06).timeout
 					i.t = Thread.new()
 					i.is_dead = false
-					i.t.start(i.loading, Thread.PRIORITY_HIGH)
+					i.t.start(i.loading, Thread.PRIORITY_HIGH)		
 				is_generation_loaded = true
 			else:
 				print("GENERATION IS NOT DEAD!!!")
@@ -184,7 +184,7 @@ func find_the_best_player_and_generate_population():
 	var best_players_move_array2 = players[1].moves
 
 	for i in range(0, steps):
-		players[index].moves  = best_players_move_array.duplicate()
+		players[index].moves  = players[i].moves.duplicate()
 		for pop_counter in range(i,steps):
 			players[index].moves.pop_back()
 		index += 1

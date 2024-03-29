@@ -1,7 +1,7 @@
 [gd_scene load_steps=15 format=3 uid="uid://dr8ojjpf3tl1o"]
 
 [ext_resource type="Texture2D" uid="uid://vjh6tf1p0ivg" path="res://Images/Player/ham.png" id="1_f5gg4"]
-[ext_resource type="Texture2D" uid="uid://c025oeg7qnj05" path="res://Images/Player/test.png" id="2_tnck4"]
+[ext_resource type="Texture2D" uid="uid://c025oeg7qnj05" path="res://Images/test.png" id="2_tnck4"]
 [ext_resource type="Texture2D" uid="uid://c7nttvm4xgmuj" path="res://Images/Player/left2.png" id="3_mwvfn"]
 [ext_resource type="Texture2D" uid="uid://d1raj3l4p0v5n" path="res://Images/Player/left.png" id="4_p6upc"]
 
@@ -124,8 +124,7 @@ func live():
 		moves.append(move)
 
 		move(move)
-		await get_tree().create_timer(1).timeout
-		await get_tree().create_timer(1).timeout
+		await get_tree().create_timer(2).timeout
 	
 		move_end_pos_x = pos_x
 		
@@ -143,8 +142,6 @@ func live():
 		if is_dead == true:
 			break
 				
-				
-	await get_tree().create_timer(1).timeout				
 	t.wait_to_finish()
 			
 func _ready():
