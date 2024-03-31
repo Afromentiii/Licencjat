@@ -90,7 +90,6 @@ func load_generation_procedure():
 				await get_tree().create_timer(0.1).timeout
 				for i in players:
 					i.position = i.respawnPosition
-					await get_tree().create_timer(0.06).timeout
 					i.t = Thread.new()
 					i.is_dead = false
 					i.t.start(i.loading, Thread.PRIORITY_HIGH)		
@@ -155,7 +154,6 @@ func start_living_process():
 	is_living_process_started = true
 	for i in players:
 		i.position = i.respawnPosition
-		await get_tree().create_timer(0.06).timeout
 		i.t = Thread.new()
 		i.is_dead = false
 		i.t.start(i.life, Thread.PRIORITY_HIGH)
