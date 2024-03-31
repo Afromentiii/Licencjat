@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dr8ojjpf3tl1o"]
+[gd_scene load_steps=15 format=3 uid="uid://b5b6ue2mtp10h"]
 
 [ext_resource type="Texture2D" uid="uid://vjh6tf1p0ivg" path="res://Images/Player/ham.png" id="1_f5gg4"]
 [ext_resource type="Texture2D" uid="uid://c025oeg7qnj05" path="res://Images/Player/test.png" id="2_tnck4"]
@@ -39,10 +39,9 @@ var loading = Callable(self,\"just_load_and_execute_moves\")
 var t : Thread
 
 func just_load_and_execute_moves():
-	moves = [2, 4, 3, 3, 5, 1, 2, 3, 2, 5, 3, 3, 5]
 	for i in moves:
 		move(i)
-		await get_tree().create_timer(1.5).timeout
+		await get_tree().create_timer(1.75).timeout
 	moves.clear()
 	
 	is_dead = true
@@ -115,7 +114,7 @@ func live():
 		for move in moves:
 			previous_pos_x = pos_x
 			move(move)
-			await get_tree().create_timer(1.5).timeout
+			await get_tree().create_timer(1.75).timeout
 			move_end_pos_x = pos_x
 			
 			if move_end_pos_x > previous_pos_x:
@@ -128,7 +127,7 @@ func live():
 			moves.append(move)
 
 			move(move)
-			await get_tree().create_timer(1.5).timeout
+			await get_tree().create_timer(1.75).timeout
 		
 			move_end_pos_x = pos_x
 			
