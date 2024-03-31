@@ -155,7 +155,7 @@ func start_living_process():
 	is_living_process_started = true
 	for i in players:
 		i.position = i.respawnPosition
-		await get_tree().create_timer(0.05).timeout
+		await get_tree().create_timer(0.06).timeout
 		i.t = Thread.new()
 		i.is_dead = false
 		i.t.start(i.life, Thread.PRIORITY_HIGH)
@@ -184,25 +184,22 @@ func find_the_best_player_and_generate_population():
 	var best_players_move_array2 = players[1].moves
 
 	for i in range(0, steps):
-		players[index].moves  = players[i].moves.duplicate()
-		for pop_counter in range(i,steps):
-			players[index].moves.pop_back()
-		index += 1
-		
-	for i in range(steps, len(players)):
 		players[index].moves  = best_players_move_array.duplicate()
 		for pop_counter in range(0,randi_range(1,4)):
 			players[index].moves.pop_back()
 		index += 1
-		
+
+	for i in range(steps, len(players)):
+		players[index].moves  = players[i].moves.duplicate()
+		for pop_counter in range(i,steps):
+			players[index].moves.pop_back()
+		index += 1
+			
 	print("NEW POPULATION IS: ")
 	for i in players:
 		i.reward = 0
 		print(i.moves)
 		
-		
-
-
 func learn():
 	await get_tree().create_timer(1).timeout
 
@@ -236,20 +233,20 @@ func learn():
 					is_genetic_started = false
 					genetic_iterations_saved = 0
 		await get_tree().create_timer(0.01).timeout
-	
 
-	'''
-	while true:
-		is_population_dead()
-		if is_generation_dead == true:
-			is_generation_dead = false
-			print("ALL DIED :D")
-			save_players_data()
-			break
-		await get_tree().create_timer(0.1).timeout
-		
-	load_players_data()
-	'''
+
+func set_player_configuration(p, i):
+		p.position = get_parent().spawnPos
+		p.respawnPosition = get_parent().spawnPos
+		p.playerID = i
+		p.get_node("Index").text = str(i)
+		p.is_dead = true
+		var red = randf_range(0,1)
+		var green = randf_range(0,1)
+		var blue = randf_range(0,1)
+		p.modulate = Color(red,green,blue)
+		players.append(p)
+
 func _ready():
 	if FileAccess.file_exists(path_to_conf):
 		var conf = FileAccess.open(path_to_conf, FileAccess.READ)
@@ -265,16 +262,7 @@ func _ready():
 	for i in range(0, gen_population):
 		var p = preload("res://Scenes/player.tscn").instantiate()
 		get_parent().call_deferred("add_child",p)
-		p.position = get_parent().spawnPos
-		p.respawnPosition = get_parent().spawnPos
-		p.playerID = i
-		p.get_node("Index").text = str(i)
-		p.is_dead = true
-		var red = randf_range(0,1)
-		var green = randf_range(0,1)
-		var blue = randf_range(0,1)
-		p.modulate = Color(red,green,blue)
-		players.append(p)
+		set_player_configuration(p,i)
 	var t = Thread.new()
 	t.start(call,Thread.PRIORITY_HIGH)
 	

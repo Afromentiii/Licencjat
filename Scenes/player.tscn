@@ -44,10 +44,9 @@ func just_load_and_execute_moves():
 	
 	for i in moves:
 		move(i)
-		await get_tree().create_timer(0.75).timeout
+		await get_tree().create_timer(2.5).timeout
 	moves.clear()
 	
-	await get_tree().create_timer(1).timeout
 	is_dead = true
 	respawn()
 	t.wait_to_finish()
@@ -112,36 +111,36 @@ func live():
 		for move in moves:
 			previous_pos_x = pos_x
 			move(move)
-			await get_tree().create_timer(0.75).timeout
+			await get_tree().create_timer(2.5).timeout
 			move_end_pos_x = pos_x
 			
 			if move_end_pos_x > previous_pos_x:
 				move_reward(move)
 	
-	await get_tree().create_timer(1).timeout		
-	while true:
-		var move = randi_range(0,5)
-		previous_pos_x = pos_x
-		moves.append(move)
+	if is_dead == false:
+		while true:
+			var move = randi_range(0,5)
+			previous_pos_x = pos_x
+			moves.append(move)
 
-		move(move)
-		await get_tree().create_timer(2).timeout
-	
-		move_end_pos_x = pos_x
+			move(move)
+			await get_tree().create_timer(2.5).timeout
 		
-		if move_end_pos_x > previous_pos_x:
-			distance_after_death += abs(respawnPosition.distance_to(Vector2(move_end_pos_x, 0)))
-			move_reward(move)
-			iter_stacked_counter = 0
-		else:
-			iter_stacked_counter += 1
-			reward -= 5
-			if iter_stacked_counter == 5:
-				reward -= 200
-				respawn()
-		
-		if is_dead == true:
-			break
+			move_end_pos_x = pos_x
+			
+			if move_end_pos_x > previous_pos_x:
+				distance_after_death += abs(respawnPosition.distance_to(Vector2(move_end_pos_x, 0)))
+				move_reward(move)
+				iter_stacked_counter = 0
+			else:
+				iter_stacked_counter += 1
+				reward -= 5
+				if iter_stacked_counter == 5:
+					reward -= 200
+					respawn()
+			
+			if is_dead == true:
+				break
 				
 	t.wait_to_finish()
 			
@@ -153,12 +152,11 @@ func endGame():
 	respawn()
 
 func respawn():
+	self.is_dead = true
 	healthBar.value = 100
 	self.position = respawnPosition
-	self.is_dead = true
 	self.is_jumping = false
 	self.is_moving_right = false
-	
 	print_gen_data()
 	
 	self.move_end_pos_x = 0
