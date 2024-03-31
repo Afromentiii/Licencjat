@@ -39,13 +39,13 @@ var loading = Callable(self,\"just_load_and_execute_moves\")
 var t : Thread
 
 func just_load_and_execute_moves():
+	moves = [2, 4, 3, 3, 5, 1, 2, 3, 2, 5, 3, 3, 5]
 	for i in moves:
 		move(i)
 		await get_tree().create_timer(1.5).timeout
 	moves.clear()
 	
 	is_dead = true
-	respawn()
 	t.wait_to_finish()
 
 func move_reward(move : int):
@@ -152,7 +152,8 @@ func _ready():
 	self.position = get_parent().spawnPos
 	
 func endGame():
-	reward += 999999
+	reward = 999999
+	await get_tree().create_timer(0.75).timeout
 	respawn()
 
 func respawn():
