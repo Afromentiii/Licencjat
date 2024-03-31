@@ -1,9 +1,9 @@
 [gd_scene load_steps=15 format=3 uid="uid://dr8ojjpf3tl1o"]
 
-[ext_resource type="Texture2D" uid="uid://vjh6tf1p0ivg" path="res://Images/ham.png" id="1_f5gg4"]
+[ext_resource type="Texture2D" uid="uid://vjh6tf1p0ivg" path="res://Images/Player/ham.png" id="1_f5gg4"]
 [ext_resource type="Texture2D" uid="uid://c025oeg7qnj05" path="res://Images/test.png" id="2_tnck4"]
-[ext_resource type="Texture2D" uid="uid://c7nttvm4xgmuj" path="res://Images/left2.png" id="3_mwvfn"]
-[ext_resource type="Texture2D" uid="uid://d1raj3l4p0v5n" path="res://Images/left.png" id="4_p6upc"]
+[ext_resource type="Texture2D" uid="uid://c7nttvm4xgmuj" path="res://Images/Player/left2.png" id="3_mwvfn"]
+[ext_resource type="Texture2D" uid="uid://d1raj3l4p0v5n" path="res://Images/Player/left.png" id="4_p6upc"]
 
 [sub_resource type="GDScript" id="GDScript_5cbp6"]
 script/source = "extends CharacterBody2D
@@ -39,12 +39,9 @@ var loading = Callable(self,\"just_load_and_execute_moves\")
 var t : Thread
 
 func just_load_and_execute_moves():
-	print(\"LOADING AND EXECUTING MOVES\")
-	print(moves)
-	
 	for i in moves:
 		move(i)
-		await get_tree().create_timer(2.5).timeout
+		await get_tree().create_timer(1).timeout
 	moves.clear()
 	
 	is_dead = true
@@ -64,6 +61,8 @@ func move_reward(move : int):
 		reward += 25
 	elif move == 5:
 		reward += 50
+	elif move == 5:
+		reward += 75
 
 func move(move : int):
 	#index_short_right = 0
@@ -101,7 +100,12 @@ func move(move : int):
 		is_jumping = true
 		is_moving_right = true
 		await get_tree().create_timer(0.5).timeout
-		is_moving_right = false	
+		is_moving_right = false
+	elif move == 6:
+		is_jumping = true
+		is_moving_right = true
+		await get_tree().create_timer(0.75).timeout
+		is_moving_right = false		
 		
 func print_gen_data():
 	print(\"Player distance is: \" + str(distance_after_death) + \" Player id is: \" + str(playerID)+ \" Reward is: \" + str(reward) + \" Executed moves are: \" + str(moves))
@@ -111,7 +115,7 @@ func live():
 		for move in moves:
 			previous_pos_x = pos_x
 			move(move)
-			await get_tree().create_timer(2.5).timeout
+			await get_tree().create_timer(1).timeout
 			move_end_pos_x = pos_x
 			
 			if move_end_pos_x > previous_pos_x:
@@ -119,12 +123,12 @@ func live():
 	
 	if is_dead == false:
 		while true:
-			var move = randi_range(0,5)
+			var move = randi_range(1,6)
 			previous_pos_x = pos_x
 			moves.append(move)
 
 			move(move)
-			await get_tree().create_timer(2.5).timeout
+			await get_tree().create_timer(1).timeout
 		
 			move_end_pos_x = pos_x
 			
@@ -199,12 +203,12 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y += gravity * delta
 
-	if is_jumping and is_on_floor():
+	if is_jumping and is_on_floor() and is_dead == false:
 		velocity.y = JUMP_VELOCITY
 		is_jumping = false
 
 	direction = Input.get_axis(\"left\", \"right\")
-	if is_moving_right == true:
+	if is_moving_right == true and is_dead == false:
 		velocity.x = 1 * SPEED
 		$AnimatedSprite2D.play(\"runR\")
 		lastDirection = 1
