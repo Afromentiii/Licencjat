@@ -39,6 +39,7 @@ func overide_conf():
 func save_players_data(gen):
 	print("SAVING DATA PROCESS...")
 	var generation = FileAccess.open(path_to_genetic + "gen" + str(gen) + ".txt", FileAccess.WRITE)
+	players.sort_custom(compare_p1_p2_reward)
 	for i in players:
 		print(i.moves,i.reward)
 		var line = str(i.reward) + " "
@@ -181,17 +182,20 @@ func find_the_best_player_and_generate_population():
 	var best_players_move_array = players[0].moves
 	var best_players_move_array2 = players[1].moves
 
+
+	for i in range(0, steps):
+		players[index].moves  = players[i].moves.duplicate()
+		for pop_counter in range(0,randi_range(1,3)):
+			players[index].moves.pop_back()
+		index += 1
+		
 	for i in range(0, steps):
 		players[index].moves  = best_players_move_array.duplicate()
-		for pop_counter in range(0,randi_range(1,4)):
+		for pop_counter in range(0,randi_range(1,3)):
 			players[index].moves.pop_back()
 		index += 1
 
-	for i in range(steps, len(players)):
-		players[index].moves  = players[i].moves.duplicate()
-		for pop_counter in range(i,steps):
-			players[index].moves.pop_back()
-		index += 1
+
 			
 	print("NEW POPULATION IS: ")
 	for i in players:
