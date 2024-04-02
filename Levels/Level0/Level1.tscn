@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3 uid="uid://cts5yyj0xhsil"]
+
+[ext_resource type="Script" path="res://Scripts/Level1.gd" id="1_7ni3g"]
+[ext_resource type="PackedScene" uid="uid://cjfwkrdtab2vt" path="res://TileMap/tile_map.tscn" id="1_tshjh"]
+[ext_resource type="PackedScene" uid="uid://cax4mp0klk1yc" path="res://Scenes/genetic_algorithm.tscn" id="2_kl8bo"]
+[ext_resource type="PackedScene" uid="uid://ok2hhuga753" path="res://Scenes/movable_camera.tscn" id="3_cu5w0"]
+
+[node name="Level1" type="Node2D"]
+script = ExtResource("1_7ni3g")
+
+[node name="TileMap" parent="." instance=ExtResource("1_tshjh")]
+layer_0/tile_data = PackedInt32Array(65534, 524288, 3, 65535, 524288, 3, 0, 524288, 3, 1, 524288, 3, 2, 524288, 3)
+
+[node name="GeneticAlgorithm" parent="." instance=ExtResource("2_kl8bo")]
+position = Vector2(-492, -95)
+path_to_conf = "res://Levels/Level0/GeneticAlgorithm1/conf.txt"
+path_to_genetic = "res://Levels/Level0/GeneticAlgorithm1/"
+
+[node name="MovableCamera" parent="." instance=ExtResource("3_cu5w0")]
+position = Vector2(40, -188)
