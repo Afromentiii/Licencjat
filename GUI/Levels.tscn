@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://0osqi26wfav4"]
+[gd_scene load_steps=4 format=3 uid="uid://0osqi26wfav4"]
 
 [ext_resource type="Script" path="res://Scripts/Levels.gd" id="1_c4te6"]
 [ext_resource type="FontFile" uid="uid://ddku7x1vxdwuq" path="res://Xolonium-Bold.ttf" id="1_fgydi"]
+[ext_resource type="Texture2D" uid="uid://whx5vho0hrel" path="res://Images/wp11630931-main-menu-wallpapers.png" id="2_yu2jr"]
 
 [node name="Levels" type="Control"]
 layout_mode = 3
@@ -11,6 +12,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_c4te6")
+
+[node name="Wp11630931-main-menu-wallpapers" type="Sprite2D" parent="."]
+position = Vector2(970, 512)
+scale = Vector2(1.94375, 1.88333)
+texture = ExtResource("2_yu2jr")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -36,22 +42,32 @@ alignment = 1
 [node name="LEVEL_0" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(256, 64)
 layout_mode = 2
+theme_override_colors/font_hover_color = Color(0.0980392, 0.878431, 0.0862745, 1)
 theme_override_fonts/font = ExtResource("1_fgydi")
 theme_override_font_sizes/font_size = 32
 text = "LEVEL_0
 "
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/HBoxContainer/VBoxContainer"]
-visible = false
+[node name="LEVEL_1" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(256, 64)
 layout_mode = 2
+theme_override_colors/font_hover_color = Color(0.0980392, 0.878431, 0.0862745, 1)
+theme_override_fonts/font = ExtResource("1_fgydi")
+theme_override_font_sizes/font_size = 32
+text = "LEVEL_1"
 
 [node name="QUIT" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(256, 64)
 layout_mode = 2
+theme_override_colors/font_hover_color = Color(0.0980392, 0.878431, 0.0862745, 1)
 theme_override_fonts/font = ExtResource("1_fgydi")
 theme_override_font_sizes/font_size = 32
 text = "QUIT
 "
 
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/LEVEL_0" to="." method="_on_level_0_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/LEVEL_1" to="." method="_on_level_1_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/QUIT" to="." method="_on_quit"]

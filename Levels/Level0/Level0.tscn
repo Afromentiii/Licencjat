@@ -31,6 +31,7 @@ layer_0/tile_data = PackedInt32Array(65527, 524288, 3, 65528, 524288, 3, 65529, 
 position = Vector2(-1127, -124)
 
 [node name="MovableCamera" parent="." instance=ExtResource("4_id7xs")]
+position = Vector2(-513, -113)
 
 [node name="EndGame" parent="." instance=ExtResource("5_vcahi")]
 position = Vector2(1594, -2)
