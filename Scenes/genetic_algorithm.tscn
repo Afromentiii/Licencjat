@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://cax4mp0klk1yc"]
+[gd_scene load_steps=7 format=3 uid="uid://cax4mp0klk1yc"]
 
 [ext_resource type="Script" path="res://Scripts/QLearning.gd" id="1_il5dt"]
 [ext_resource type="Script" path="res://Scripts/StartGenetic.gd" id="2_cxr8h"]
 [ext_resource type="Script" path="res://Scripts/Button.gd" id="2_hiyb4"]
 [ext_resource type="Script" path="res://Scripts/GenerateFirstGeneration.gd" id="2_pngvn"]
+[ext_resource type="FontFile" uid="uid://ddku7x1vxdwuq" path="res://Xolonium-Bold.ttf" id="5_ykngn"]
+[ext_resource type="FontFile" uid="uid://b7dniplmdo5hr" path="res://Images/Xolonium-Bold.ttf" id="6_mv0q4"]
 
 [node name="GeneticAlgorithm" type="Node2D"]
 script = ExtResource("1_il5dt")
@@ -11,9 +13,9 @@ script = ExtResource("1_il5dt")
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 256.0
+offset_left = 230.0
 offset_top = -250.0
-offset_right = 296.0
+offset_right = 270.0
 offset_bottom = -210.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control"]
@@ -40,12 +42,38 @@ script = ExtResource("2_hiyb4")
 [node name="TextEdit" type="TextEdit" parent="Control/VBoxContainer/Button"]
 layout_mode = 2
 offset_left = -2.0
-offset_top = 39.0
+offset_top = 35.0
 offset_right = 353.0
-offset_bottom = 70.0
+offset_bottom = 66.0
 text = "Input id of gen or iterations of genetic
 
 "
+
+[node name="Population" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = -95.0
+offset_top = 164.0
+offset_right = 256.0
+offset_bottom = 187.0
+theme_override_fonts/font = ExtResource("5_ykngn")
+text = "GENERATION POPULATION: "
+
+[node name="Generation" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = -94.0
+offset_top = 186.0
+offset_right = 20.0
+offset_bottom = 209.0
+theme_override_fonts/font = ExtResource("6_mv0q4")
+text = "GEN COUNT:"
+
+[node name="MaxGenReward" type="Label" parent="Control"]
+offset_left = -94.0
+offset_top = 141.0
+offset_right = 265.0
+offset_bottom = 164.0
+theme_override_fonts/font = ExtResource("6_mv0q4")
+text = "CURRENT GENERATION MAX REWARD: "
 
 [connection signal="pressed" from="Control/VBoxContainer/StartGenetic" to="Control/VBoxContainer/StartGenetic" method="_on_pressed"]
 [connection signal="pressed" from="Control/VBoxContainer/GenerateFirstGeneration" to="Control/VBoxContainer/GenerateFirstGeneration" method="_on_pressed"]

@@ -7,6 +7,9 @@ extends Node2D
 @onready var textArea = $Control/VBoxContainer/Button/TextEdit
 @onready var generate_first_gen = $Control/VBoxContainer/GenerateFirstGeneration
 @onready var start_genetic_algorithm = $Control/VBoxContainer/StartGenetic
+@onready var population_label = $Control/Population
+@onready var generation_label = $Control/Generation
+@onready var gen_reward = $Control/MaxGenReward
 
 var is_generation_dead : bool = false
 var is_generation_loaded: bool = false
@@ -18,13 +21,16 @@ var is_genetic_button_just_pressed : bool = false
 var is_genetic_started : bool = false
 var arrays_are_empty : bool = false
 
+var generation_counter = 0
+var max_generation_reward = 0
+
 var call = Callable(self, "learn")
 var players = []
 var player_is_dead_counter = 0
 var move : int = 0
 var lines = []
-var gen_population = 0
-var gen_last = 0
+@export var gen_population = 64
+@export var gen_last = 1
 var genetic_iterations = 0
 var genetic_iterations_saved = 0
 var genetic_iter = 0
@@ -39,7 +45,11 @@ func overide_conf():
 func save_players_data(gen):
 	print("SAVING DATA PROCESS...")
 	var generation = FileAccess.open(path_to_genetic + "gen" + str(gen) + ".txt", FileAccess.WRITE)
+	generation_counter += 1
+	generation_label.text = "GEN COUNT: " + str(generation_counter)
 	players.sort_custom(compare_p1_p2_reward)
+	max_generation_reward = players[0].reward
+	gen_reward.text = "CURRENT GENERATION MAX REWARD: " + str(max_generation_reward)
 	for i in players:
 		print(i.moves,i.reward)
 		var line = str(i.reward) + " "
@@ -214,7 +224,7 @@ func learn():
 		if is_generation_dead == true:
 			if is_saving == true:
 				save_players_data(gen_last)
-				await get_tree().create_timer(1).timeout
+				await get_tree().create_timer(0.5).timeout
 				is_saving = false
 			if is_genetic_started == true:
 				print("GENETIC ITER IS ", genetic_iter)
@@ -251,16 +261,22 @@ func set_player_configuration(p, i):
 
 func _ready():
 	if FileAccess.file_exists(path_to_conf):
-		var conf = FileAccess.open(path_to_conf, FileAccess.READ)
-		while conf.eof_reached() == false:
-			var line = conf.get_line()
-			var splited_line = line.split(" ")
-			lines.append(splited_line)
-			
-	gen_population = int(lines[0][1])
-	gen_last = int(lines[1][1])
-	lines.clear()
-	
+		var conf = FileAccess.open(path_to_conf, FileAccess.WRITE)
+		var line = "GENERATION_POPULATION " + str(gen_population)
+		var line2 = "LAST_GENERATION " + str(gen_last)
+		var counter = 1
+		var dir = DirAccess.open(path_to_genetic)
+		
+		conf.store_line(line)
+		conf.store_line(line2)
+		generation_label.text = "GEN COUNT: " + str(generation_counter)
+		population_label.text = "GENERATION POPULATION: " + str(gen_population)
+		gen_reward.text = "CURRENT GENERATION MAX REWARD: " + str(max_generation_reward)
+		
+		while FileAccess.file_exists(path_to_genetic + "gen" + str(counter) + ".txt"):
+			dir.remove(path_to_genetic + "gen" + str(counter) + ".txt")
+			counter += 1
+
 	for i in range(0, gen_population):
 		var p = preload("res://Scenes/player.tscn").instantiate()
 		get_parent().call_deferred("add_child",p)
