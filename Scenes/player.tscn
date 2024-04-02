@@ -1,7 +1,7 @@
 [gd_scene load_steps=15 format=3 uid="uid://b5b6ue2mtp10h"]
 
-[ext_resource type="Texture2D" uid="uid://vjh6tf1p0ivg" path="res://Images/Player/ham.png" id="1_f5gg4"]
-[ext_resource type="Texture2D" uid="uid://c025oeg7qnj05" path="res://Images/test.png" id="2_tnck4"]
+[ext_resource type="Texture2D" uid="uid://vjh6tf1p0ivg" path="res://Images/ham.png" id="1_f5gg4"]
+[ext_resource type="Texture2D" uid="uid://c025oeg7qnj05" path="res://Images/Player/test.png" id="2_tnck4"]
 [ext_resource type="Texture2D" uid="uid://c7nttvm4xgmuj" path="res://Images/Player/left2.png" id="3_mwvfn"]
 [ext_resource type="Texture2D" uid="uid://d1raj3l4p0v5n" path="res://Images/Player/left.png" id="4_p6upc"]
 
@@ -107,7 +107,7 @@ func move(move : int):
 		is_moving_right = false		
 		
 func print_gen_data():
-	print(\"Player distance is: \" + str(distance_after_death) + \" Player id is: \" + str(playerID)+ \" Reward is: \" + str(reward) + \" Executed moves are: \" + str(moves))
+	print(\"Player id is: \" + str(playerID)+ \" Reward is: \" + str(reward) + \" Executed moves are: \" + str(moves))
 
 func live():
 	if moves.is_empty() == false:
@@ -169,7 +169,6 @@ func respawn():
 	self.position = respawnPosition
 	self.is_jumping = false
 	self.is_moving_right = false
-	print_gen_data()
 	
 	self.move_end_pos_x = 0
 	self.previous_pos_x = 0

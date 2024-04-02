@@ -10,6 +10,7 @@ extends Node2D
 @onready var population_label = $Control/Population
 @onready var generation_label = $Control/Generation
 @onready var gen_reward = $Control/MaxGenReward
+@onready var console = $Control/Console
 
 var is_generation_dead : bool = false
 var is_generation_loaded: bool = false
@@ -43,7 +44,7 @@ func overide_conf():
 	conf.close()
 
 func save_players_data(gen):
-	print("SAVING DATA PROCESS...")
+	console.text += "SAVING DATA PROCESS... \n"
 	var generation = FileAccess.open(path_to_genetic + "gen" + str(gen) + ".txt", FileAccess.WRITE)
 	generation_counter += 1
 	generation_label.text = "GEN COUNT: " + str(generation_counter)
@@ -51,7 +52,7 @@ func save_players_data(gen):
 	max_generation_reward = players[0].reward
 	gen_reward.text = "CURRENT GENERATION MAX REWARD: " + str(max_generation_reward)
 	for i in players:
-		print(i.moves,i.reward)
+		console.text += ("Player id is: " + str(i.playerID)+ " Reward is: " + str(i.reward) + " Executed moves are: " + str(i.moves) + "\n")
 		var line = str(i.reward) + " "
 		for m in i.moves:
 			line += str(m) + " "
@@ -62,9 +63,10 @@ func save_players_data(gen):
 	generation.close()
 	
 func load_players_data(path):
-	print("LOADING DATA PROCESS...")
 	var index = 0
 	if FileAccess.file_exists(path):
+		console.clear()
+		console.text += ("LOADING DATA PROCESS... \n")
 		var generation = FileAccess.open(path, FileAccess.READ)
 		while generation.eof_reached() == false:
 			var line = generation.get_line()
@@ -76,10 +78,10 @@ func load_players_data(path):
 				players[index].reward = int(splited_line[0])
 				index += 1
 		for i in players:
-			print(i.moves, i.reward)
+			console.text += ("Player id is: " + str(i.playerID)+ " Reward is: " + str(i.reward) + " Executed moves are: " + str(i.moves) + "\n")
 		generation.close()
 	else:
-		print("File does not exist!")
+		console.text += "FILE DOES NOT EXIST!!! \n"
 			
 func is_population_dead():
 	for i in players:
@@ -97,6 +99,7 @@ func load_generation_procedure():
 			is_population_dead()
 			if is_generation_dead == true:
 				is_generation_dead = false
+				console.clear()
 				load_players_data(path)
 				await get_tree().create_timer(0.1).timeout
 				for i in players:
@@ -106,9 +109,9 @@ func load_generation_procedure():
 					i.t.start(i.loading, Thread.PRIORITY_HIGH)		
 				is_generation_loaded = true
 			else:
-				print("GENERATION IS NOT DEAD!!!")
+				console.text += "GENERATION IS NOT DEAD!!! \n"
 		else:
-			print("File does not exist!")
+			console.text += "FILE DOES NOT EXIST!!! \n"
 		is_button_just_pressed = false
 		
 func generate_first_gen_procedure():
@@ -123,7 +126,7 @@ func generate_first_gen_procedure():
 					start_living_process()
 					is_saving = true
 			else:
-				print("GENERATION IS NOT DEAD!!!!")
+				console.text += "GENERATION IS NOT DEAD!!! \n"
 		is_generate_button_just_pressed = false
 
 func mutate(p1):
@@ -144,6 +147,7 @@ func start_genetic_procedure():
 			if genetic_iterations > 0:
 				is_population_dead()
 				if is_generation_dead == true:
+					console.clear()
 					find_the_best_player_and_generate_population()
 					is_genetic_started = true
 					is_generation_dead = false
@@ -152,16 +156,16 @@ func start_genetic_procedure():
 					gen_last += 1
 					overide_conf()
 					genetic_iter = 1
-					print("GENETIC PROCESS IS STARTING...", "GENETIC ITERATIONS SAVED: ", genetic_iterations_saved)
+					console.text += "GENETIC PROCESS IS STARTING..." + "GENETIC ITERATIONS SAVED: " + str(genetic_iterations_saved) + "\n"
 					start_living_process()
 				else:
-					print("GENERATION IS NOT DEAD!!!!")
+					console.text += "GENERATION IS NOT DEAD!!! \n"
 			else:
-				print("ITERATION NUMBER CAN T BE NEGATIVE!!!!")
+				console.text += "ITERATION NUMBER CAN T BE NEGATIVE!!!! \n"
 		is_genetic_button_just_pressed = false
 
 func start_living_process():
-	print("STARTING LIVING PROCESS...")
+	console.text += "LIVING PROCESS IS STARTING... \n"
 	await get_tree().create_timer(0.5).timeout
 	is_living_process_started = true
 	for i in players:
@@ -207,11 +211,12 @@ func find_the_best_player_and_generate_population():
 		index += 1
 
 
-			
+	'''
 	print("NEW POPULATION IS: ")
 	for i in players:
 		i.reward = 0
 		print(i.moves)
+	'''
 		
 func learn():
 	await get_tree().create_timer(1).timeout
@@ -228,7 +233,7 @@ func learn():
 				await get_tree().create_timer(0.5).timeout
 				is_saving = false
 			if is_genetic_started == true:
-				print("GENETIC ITER IS ", genetic_iter)
+				#print("GENETIC ITER IS ", genetic_iter)
 				get_tree().create_timer(0.1).timeout
 				if genetic_iter < genetic_iterations_saved:
 					is_generation_dead = false
@@ -238,6 +243,7 @@ func learn():
 					gen_last += 1
 					overide_conf()
 					is_saving = true
+					console.clear()
 					genetic_iter += 1
 					
 				else:
