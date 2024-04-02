@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://b55i0640wr7ym"]
+
+[ext_resource type="Script" path="res://Scripts/HugeJumpArea.gd" id="1_qq2lt"]
+[ext_resource type="Texture2D" uid="uid://cbfo32i5gyweq" path="res://Images/Trampolina2.png" id="2_bs6sv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s2iy4"]
+size = Vector2(32, 20)
+
+[node name="HugeJumpArea" type="Area2D"]
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("1_qq2lt")
+
+[node name="Trampolina2" type="Sprite2D" parent="."]
+position = Vector2(0, -4)
+scale = Vector2(1.0625, 1)
+texture = ExtResource("2_bs6sv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, -1)
+shape = SubResource("RectangleShape2D_s2iy4")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
