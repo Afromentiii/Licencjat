@@ -68,6 +68,7 @@ theme_override_fonts/font = ExtResource("6_mv0q4")
 text = "GEN COUNT:"
 
 [node name="MaxGenReward" type="Label" parent="Control"]
+layout_mode = 0
 offset_left = -94.0
 offset_top = 141.0
 offset_right = 265.0

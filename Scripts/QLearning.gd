@@ -162,6 +162,7 @@ func start_genetic_procedure():
 
 func start_living_process():
 	print("STARTING LIVING PROCESS...")
+	await get_tree().create_timer(0.5).timeout
 	is_living_process_started = true
 	for i in players:
 		i.position = i.respawnPosition
