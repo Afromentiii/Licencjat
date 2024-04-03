@@ -182,9 +182,8 @@ func enemyDMG():
 	velocity.y = -300
 	
 func lavaColumn_dmg() -> void:
-	$healthBar.value -= 40
-	velocity.y = -250
-	self.position.x -= 80 * direction
+	reward -= 300
+	$healthBar.value -= 100
 
 func blackMatter_dmg() -> void:
 	$healthBar.value -= 100
