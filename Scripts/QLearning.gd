@@ -44,6 +44,7 @@ func overide_conf():
 	conf.close()
 
 func save_players_data(gen):
+	console.clear()
 	console.text += "SAVING DATA PROCESS... \n"
 	var generation = FileAccess.open(path_to_genetic + "gen" + str(gen) + ".txt", FileAccess.WRITE)
 	generation_counter += 1
@@ -65,7 +66,6 @@ func save_players_data(gen):
 func load_players_data(path):
 	var index = 0
 	if FileAccess.file_exists(path):
-		console.clear()
 		console.text += ("LOADING DATA PROCESS... \n")
 		var generation = FileAccess.open(path, FileAccess.READ)
 		while generation.eof_reached() == false:
@@ -77,8 +77,7 @@ func load_players_data(path):
 			if index < len(players):
 				players[index].reward = int(splited_line[0])
 				index += 1
-		for i in players:
-			console.text += ("Player id is: " + str(i.playerID)+ " Reward is: " + str(i.reward) + " Executed moves are: " + str(i.moves) + "\n")
+				
 		generation.close()
 	else:
 		console.text += "FILE DOES NOT EXIST!!! \n"
@@ -102,6 +101,8 @@ func load_generation_procedure():
 				is_generation_dead = false
 				console.clear()
 				load_players_data(path)
+				for i in players:
+					console.text += ("Player id is: " + str(i.playerID)+ " Reward is: " + str(i.reward) + " Executed moves are: " + str(i.moves) + "\n")
 				await get_tree().create_timer(0.75).timeout
 				for i in players:
 					i.position = i.respawnPosition
@@ -160,6 +161,7 @@ func start_genetic_procedure():
 					overide_conf()
 					genetic_iter = 1
 					console.text += "GENETIC PROCESS IS STARTING..." + "GENETIC ITERATIONS SAVED: " + str(genetic_iterations_saved) + "\n"
+					load_gen_button.disabled = true
 					start_living_process()
 				else:
 					console.text += "GENERATION IS NOT DEAD!!! \n"
@@ -231,7 +233,9 @@ func learn():
 		
 		is_population_dead()
 		if is_generation_dead == true:
-			load_gen_button.disabled = false
+			if is_generation_loaded == true:
+				load_gen_button.disabled = false
+				is_generation_loaded = false
 			if is_saving == true:
 				save_players_data(gen_last)
 				await get_tree().create_timer(0.5).timeout
@@ -255,6 +259,7 @@ func learn():
 					is_genetic_started = false
 					genetic_iterations_saved = 0
 					start_genetic_algorithm.disabled = false
+					load_gen_button.disabled = false
 		await get_tree().create_timer(0.01).timeout
 
 
