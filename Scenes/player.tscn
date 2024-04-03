@@ -148,8 +148,9 @@ func live():
 			
 			if is_dead == true:
 				break
-	
+	await get_tree().create_timer(0.1).timeout
 	t.wait_to_finish()
+
 			
 func _ready():
 	self.position = get_parent().spawnPos
