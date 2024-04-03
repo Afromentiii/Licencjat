@@ -39,6 +39,13 @@ theme_override_constants/separation = 60
 layout_mode = 2
 alignment = 1
 
+[node name="README" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(256, 64)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_fgydi")
+theme_override_font_sizes/font_size = 32
+text = "READ_ME"
+
 [node name="LEVEL_0" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(256, 64)
 layout_mode = 2
@@ -68,6 +75,38 @@ text = "QUIT
 [node name="HSeparator" type="HSeparator" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 
+[node name="TextEdit" type="TextEdit" parent="."]
+visible = false
+layout_mode = 0
+offset_right = 755.0
+offset_bottom = 1091.0
+theme_override_fonts/font = ExtResource("1_fgydi")
+theme_override_font_sizes/font_size = 32
+text = "                              README
+1. You can control the camera by clicking the left button on the map.
+
+2. Zooming in and out of the map can be done using the scroll wheel.
+
+3. The point marked with a flag signifies the end of the level.
+
+4. For laptop users, it's recommended to connect the laptop to a power supply.
+
+5. Clicking the README button again will hide this text area from view.
+
+6. The default population is 64.
+
+7. A result of 99999 means that the individual has reached the endpoint."
+editable = false
+context_menu_enabled = false
+shortcut_keys_enabled = false
+selecting_enabled = false
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
+virtual_keyboard_enabled = false
+middle_mouse_paste_enabled = false
+wrap_mode = 1
+
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/README" to="." method="_on_readme_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/LEVEL_0" to="." method="_on_level_0_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/LEVEL_1" to="." method="_on_level_1_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/QUIT" to="." method="_on_quit"]

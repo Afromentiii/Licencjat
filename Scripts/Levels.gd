@@ -21,3 +21,10 @@ func _on_level_0_pressed():
 
 func _on_level_1_pressed():
 	get_tree().change_scene_to_packed(load("res://Levels/Level0/Level1.tscn"))
+
+
+func _on_readme_pressed():
+	if $TextEdit.visible == false:
+		$TextEdit.visible = true
+	else:
+		$TextEdit.visible = false
