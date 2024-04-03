@@ -6,10 +6,6 @@ func _ready():
 	pass # Replace with function body.
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
 func _on_quit():
 	get_tree().change_scene_to_packed(load("res://GUI/Menu.tscn"))
 
@@ -28,3 +24,7 @@ func _on_readme_pressed():
 		$TextEdit.visible = true
 	else:
 		$TextEdit.visible = false
+
+
+func _on_level_2_pressed():
+	get_tree().change_scene_to_packed(load("res://Levels/Level0/Level2.tscn"))

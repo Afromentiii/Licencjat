@@ -171,9 +171,10 @@ func start_genetic_procedure():
 
 func start_living_process():
 	console.text += "LIVING PROCESS IS STARTING... \n"
-	await get_tree().create_timer(0.75).timeout
+	await get_tree().create_timer(1).timeout
 	is_living_process_started = true
 	for i in players:
+		i.reward = 0
 		i.position = i.respawnPosition
 		i.t = Thread.new()
 		i.is_dead = false
@@ -200,8 +201,6 @@ func find_the_best_player_and_generate_population():
 	var steps = gen_population / 2
 	var index = 0
 	var best_players_move_array = players[0].moves
-	var best_players_move_array2 = players[1].moves
-
 
 	for i in range(0, steps):
 		players[index].moves  = players[i].moves.duplicate()
