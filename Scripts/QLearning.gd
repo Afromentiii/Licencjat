@@ -12,7 +12,7 @@ extends Node2D
 @onready var gen_reward = $Control/MaxGenReward
 @onready var console = $Control/Console
 
-var is_generation_dead : bool = false
+var is_generation_dead : bool = true
 var is_generation_loaded: bool = false
 var is_button_just_pressed : bool = false
 var is_generate_button_just_pressed : bool = false
@@ -98,10 +98,11 @@ func load_generation_procedure():
 		if FileAccess.file_exists(path):
 			is_population_dead()
 			if is_generation_dead == true:
+				load_gen_button.disabled = true
 				is_generation_dead = false
 				console.clear()
 				load_players_data(path)
-				await get_tree().create_timer(0.1).timeout
+				await get_tree().create_timer(0.75).timeout
 				for i in players:
 					i.position = i.respawnPosition
 					i.t = Thread.new()
@@ -121,6 +122,7 @@ func generate_first_gen_procedure():
 		else:
 			is_population_dead()
 			if is_generation_dead == true:
+				generate_first_gen.disabled = true
 				is_generation_dead = false
 				if is_living_process_started == false:
 					start_living_process()
@@ -147,6 +149,7 @@ func start_genetic_procedure():
 			if genetic_iterations > 0:
 				is_population_dead()
 				if is_generation_dead == true:
+					start_genetic_algorithm.disabled = true
 					console.clear()
 					find_the_best_player_and_generate_population()
 					is_genetic_started = true
@@ -166,7 +169,7 @@ func start_genetic_procedure():
 
 func start_living_process():
 	console.text += "LIVING PROCESS IS STARTING... \n"
-	await get_tree().create_timer(0.5).timeout
+	await get_tree().create_timer(0.75).timeout
 	is_living_process_started = true
 	for i in players:
 		i.position = i.respawnPosition
@@ -228,6 +231,7 @@ func learn():
 		
 		is_population_dead()
 		if is_generation_dead == true:
+			load_gen_button.disabled = false
 			if is_saving == true:
 				save_players_data(gen_last)
 				await get_tree().create_timer(0.5).timeout
@@ -243,7 +247,6 @@ func learn():
 					gen_last += 1
 					overide_conf()
 					is_saving = true
-					console.clear()
 					genetic_iter += 1
 					
 				else:
@@ -251,6 +254,7 @@ func learn():
 					genetic_iter = 0
 					is_genetic_started = false
 					genetic_iterations_saved = 0
+					start_genetic_algorithm.disabled = false
 		await get_tree().create_timer(0.01).timeout
 
 

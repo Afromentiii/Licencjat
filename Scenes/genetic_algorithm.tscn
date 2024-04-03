@@ -94,6 +94,13 @@ offset_right = -108.0
 offset_bottom = 682.0
 theme_override_fonts/font = ExtResource("5_ykngn")
 editable = false
+context_menu_enabled = false
+shortcut_keys_enabled = false
+selecting_enabled = false
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
+virtual_keyboard_enabled = false
+middle_mouse_paste_enabled = false
 script = ExtResource("8_wmhqe")
 
 [connection signal="pressed" from="Control/VBoxContainer/StartGenetic" to="Control/VBoxContainer/StartGenetic" method="_on_pressed"]
