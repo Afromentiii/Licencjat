@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://8met7xwesdys"]
+[gd_scene load_steps=15 format=3 uid="uid://8met7xwesdys"]
 
 [ext_resource type="Script" path="res://Scripts/Level2.gd" id="1_qs0qx"]
 [ext_resource type="PackedScene" uid="uid://cjfwkrdtab2vt" path="res://TileMap/tile_map.tscn" id="2_igg7u"]
@@ -8,7 +8,6 @@
 [ext_resource type="Script" path="res://Scripts/Lava.gd" id="7_uvbdt"]
 [ext_resource type="PackedScene" uid="uid://b55i0640wr7ym" path="res://Scenes/huge_jump_area.tscn" id="8_fupwg"]
 [ext_resource type="PackedScene" uid="uid://c5l5piblixape" path="res://Scenes/LavaColumn.tscn" id="8_i6o3h"]
-[ext_resource type="PackedScene" uid="uid://bjfk0q0kcbdbp" path="res://Scenes/arrow_spawner.tscn" id="9_nbl5y"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vv105"]
 size = Vector2(448, 27)
@@ -95,8 +94,5 @@ position = Vector2(2448, -512)
 
 [node name="HugeJumpArea7" parent="." instance=ExtResource("8_fupwg")]
 position = Vector2(2990.87, -506.654)
-
-[node name="ArrowSpawner" parent="." instance=ExtResource("9_nbl5y")]
-position = Vector2(535, -11)
 
 [connection signal="body_entered" from="Lava" to="Lava" method="_on_body_entered"]
