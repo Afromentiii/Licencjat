@@ -29,6 +29,7 @@ layer_0/tile_data = PackedInt32Array(65527, 524288, 3, 65528, 524288, 3, 65529, 
 
 [node name="GeneticAlgorithm" parent="." instance=ExtResource("3_w8pbg")]
 position = Vector2(-1127, -124)
+gen_population = 300
 
 [node name="MovableCamera" parent="." instance=ExtResource("4_id7xs")]
 position = Vector2(-643, -117)

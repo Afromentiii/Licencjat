@@ -178,6 +178,8 @@ func start_living_process():
 		i.position = i.respawnPosition
 		i.t = Thread.new()
 		i.is_dead = false
+		if i.t.is_alive() == true:
+			i.t.wait_to_finish()
 		i.t.start(i.life, Thread.PRIORITY_HIGH)
 
 func check_if_moves_are_empty():
