@@ -5,7 +5,6 @@ extends Node2D
 func _ready():
 	pass
 
-
 func _process(_delta):
 	if Input.is_action_just_pressed("exit"):
 		for i in get_node("GeneticAlgorithm").players:
