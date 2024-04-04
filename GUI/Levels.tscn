@@ -106,7 +106,9 @@ text = "                              README
 
 6. The default population is 64.
 
-7. A result of 99999 means that the individual has reached the endpoint."
+7. A result of 99999 means that the individual has reached the endpoint.
+
+8. Clicking exit will open the menu window."
 editable = false
 context_menu_enabled = false
 shortcut_keys_enabled = false
