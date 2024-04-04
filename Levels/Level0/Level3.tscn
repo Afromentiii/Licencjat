@@ -1,0 +1,27 @@
+[gd_scene load_steps=7 format=3 uid="uid://b8615tvkblu4w"]
+
+[ext_resource type="Script" path="res://Scripts/Level3.gd" id="1_8rf28"]
+[ext_resource type="PackedScene" uid="uid://cjfwkrdtab2vt" path="res://TileMap/tile_map.tscn" id="2_5l37k"]
+[ext_resource type="PackedScene" uid="uid://ok2hhuga753" path="res://Scenes/movable_camera.tscn" id="3_xchyf"]
+[ext_resource type="PackedScene" uid="uid://cax4mp0klk1yc" path="res://Scenes/genetic_algorithm.tscn" id="4_efads"]
+[ext_resource type="PackedScene" uid="uid://d0l3qj6wrlljv" path="res://Scenes/end_game.tscn" id="5_8fl82"]
+[ext_resource type="PackedScene" uid="uid://bjfk0q0kcbdbp" path="res://Scenes/arrow_spawner.tscn" id="6_yrivd"]
+
+[node name="Level3" type="Node2D"]
+script = ExtResource("1_8rf28")
+spawnPos = Vector2(-50, 0)
+
+[node name="TileMap" parent="." instance=ExtResource("2_5l37k")]
+layer_0/tile_data = PackedInt32Array(0, 65536, 0, 65535, 65536, 0, 1, 65536, 0, 2, 65536, 0, 3, 65536, 0, 5, 65536, 0, 4, 65536, 0, 65534, 65536, 0, 65533, 65536, 0, 65532, 65536, 0, 65531, 65536, 0, 65530, 65536, 0, 65529, 65536, 0, 65528, 65536, 0, 65527, 65536, 0, 65526, 65536, 0, 65525, 65536, 0, 65524, 65536, 0, 65523, 65536, 0, 65522, 65536, 0, 65521, 65536, 0, 65520, 65536, 0, 65519, 65536, 0, 65518, 65536, 0, 65517, 65536, 0, 65516, 65536, 0, 65515, 65536, 0, 6, 65536, 0, 7, 65536, 0, 8, 65536, 0, 9, 65536, 0, 10, 65536, 0, 11, 65536, 0, 12, 65536, 0, 13, 65536, 0, 14, 65536, 0, 15, 65536, 0, 16, 65536, 0, 17, 65536, 0, 18, 65536, 0, 19, 65536, 0, 20, 65536, 0, 21, 65536, 0, 22, 65536, 0, 23, 65536, 0, 24, 65536, 0, 25, 65536, 0, 26, 65536, 0, 27, 65536, 0, 28, 65536, 0, 29, 65536, 0, -65508, 65536, 0, -65507, 65536, 0, -131044, 65536, 0, -131045, 65536, 0, -65509, 65536, 0, -131043, 65536, 0, -196579, 65536, 0, -196580, 65536, 0, -196581, 65536, 0, -65510, 65536, 0, -131046, 65536, 0, -196582, 65536, 0, -65511, 65536, 0, -131047, 65536, 0, -65512, 65536, 0)
+
+[node name="MovableCamera" parent="." instance=ExtResource("3_xchyf")]
+position = Vector2(-547, -202)
+
+[node name="GeneticAlgorithm" parent="." instance=ExtResource("4_efads")]
+position = Vector2(-778, -210)
+
+[node name="EndGame" parent="." instance=ExtResource("5_8fl82")]
+position = Vector2(885, -94)
+
+[node name="ArrowSpawner" parent="." instance=ExtResource("6_yrivd")]
+position = Vector2(542, -8)

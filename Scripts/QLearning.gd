@@ -36,7 +36,7 @@ var genetic_iterations = 0
 var genetic_iterations_saved = 0
 var genetic_iter = 0
 var player_moves_is_empty_counter = 0
-
+var t : Thread
 func overide_conf():
 	var conf = FileAccess.open(path_to_conf, FileAccess.WRITE)
 	conf.store_line("GENERATION_POPULATION " + str(gen_population))
@@ -171,7 +171,7 @@ func start_genetic_procedure():
 
 func start_living_process():
 	console.text += "LIVING PROCESS IS STARTING... \n"
-	await get_tree().create_timer(1.25).timeout
+	await get_tree().create_timer(1.45).timeout
 	is_living_process_started = true
 	for i in players:
 		i.reward = 0
@@ -296,7 +296,7 @@ func _ready():
 		var p = preload("res://Scenes/player.tscn").instantiate()
 		get_parent().call_deferred("add_child",p)
 		set_player_configuration(p,i)
-	var t = Thread.new()
+	t = Thread.new()
 	t.start(call,Thread.PRIORITY_HIGH)
 	
 func _process(_delta):
