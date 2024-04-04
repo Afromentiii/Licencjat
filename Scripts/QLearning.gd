@@ -171,7 +171,7 @@ func start_genetic_procedure():
 
 func start_living_process():
 	console.text += "LIVING PROCESS IS STARTING... \n"
-	await get_tree().create_timer(1).timeout
+	await get_tree().create_timer(1.25).timeout
 	is_living_process_started = true
 	for i in players:
 		i.reward = 0
