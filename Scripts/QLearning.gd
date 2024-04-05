@@ -174,12 +174,16 @@ func start_living_process():
 	await get_tree().create_timer(1.45).timeout
 	is_living_process_started = true
 	for i in players:
+		if i.t != null:
+			if i.t.is_alive() == true:
+				i.t.wait_to_finish()
+			
+	await get_tree().create_timer(1.45).timeout
+	for i in players:
 		i.reward = 0
 		i.position = i.respawnPosition
 		i.t = Thread.new()
 		i.is_dead = false
-		if i.t.is_alive() == true:
-			i.t.wait_to_finish()
 		i.t.start(i.life, Thread.PRIORITY_HIGH)
 
 func check_if_moves_are_empty():
