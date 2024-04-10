@@ -148,11 +148,13 @@ func live():
 					respawn()
 			
 			if is_dead == true:
-				t.wait_to_finish()
+				if t.is_alive() == true:
+					t.wait_to_finish()
 				return
 	
-	t.wait_to_finish()			
-	return
+	if t.is_alive() == true:
+		t.wait_to_finish()			
+	return 
 
 			
 func _ready():

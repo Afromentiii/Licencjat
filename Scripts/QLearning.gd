@@ -174,19 +174,25 @@ func start_genetic_procedure():
 func start_living_process():
 	console.text += "LIVING PROCESS IS STARTING... \n"
 	is_living_process_started = true
-	await get_tree().create_timer(4.5).timeout
+
 	var th = 0
+	for i in players:
+		if i.t == null:
+			i.reward = 0
+			i.position = i.respawnPosition
+			i.t = Thread.new()
+			i.is_dead = false
+			
+
 	while true:
 		th = 0
 		for i in players:
-			if i.t != null:
-				if i.t.is_alive() == true:
+			if  i.t != null:
+				if i.t.is_started() == true:
 					i.t.wait_to_finish()
 					th += 1
 		if th == 0:
 			break
-			
-	await get_tree().create_timer(0.5).timeout
 	for i in players:
 		i.reward = 0
 		i.position = i.respawnPosition
