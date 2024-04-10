@@ -1,7 +1,7 @@
 extends Node2D
 
-@export var spawnPos = Vector2(-20,0)
-# Called when the node enters the scene tree for the first time.
+@export var spawnPos = Vector2(700,0)
+
 func _ready():
 	pass
 
