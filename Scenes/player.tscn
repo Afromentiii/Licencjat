@@ -48,6 +48,7 @@ func just_load_and_execute_moves():
 	is_dead = true
 	self.position = respawnPosition
 	t.wait_to_finish()
+	return
 
 func move_reward(move : int):
 	if move == 0:
@@ -147,7 +148,8 @@ func live():
 					respawn()
 			
 			if is_dead == true:
-				break
+				t.wait_to_finish()
+				return
 				
 	t.wait_to_finish()			
 	return
