@@ -150,7 +150,7 @@ func live():
 			if is_dead == true:
 				t.wait_to_finish()
 				return
-				
+	
 	t.wait_to_finish()			
 	return
 
