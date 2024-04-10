@@ -11,6 +11,7 @@ extends Node2D
 @onready var generation_label = $Control/Generation
 @onready var gen_reward = $Control/MaxGenReward
 @onready var console = $Control/Console
+@onready var stopButton = $Control/Stop
 
 var is_generation_dead : bool = true
 var is_generation_loaded: bool = false
@@ -162,6 +163,7 @@ func start_genetic_procedure():
 					genetic_iter = 1
 					console.text += "GENETIC PROCESS IS STARTING..." + "GENETIC ITERATIONS SAVED: " + str(genetic_iterations_saved) + "\n"
 					load_gen_button.disabled = true
+					stopButton.disabled = false
 					start_living_process()
 				else:
 					console.text += "GENERATION IS NOT DEAD!!! \n"
@@ -265,6 +267,7 @@ func learn():
 					genetic_iterations_saved = 0
 					start_genetic_algorithm.disabled = false
 					load_gen_button.disabled = false
+					stopButton.disabled = true
 		await get_tree().create_timer(0.01).timeout
 
 

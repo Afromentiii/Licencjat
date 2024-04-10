@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cax4mp0klk1yc"]
+[gd_scene load_steps=10 format=3 uid="uid://cax4mp0klk1yc"]
 
 [ext_resource type="Script" path="res://Scripts/QLearning.gd" id="1_il5dt"]
 [ext_resource type="Script" path="res://Scripts/StartGenetic.gd" id="2_cxr8h"]
@@ -7,6 +7,7 @@
 [ext_resource type="FontFile" uid="uid://ddku7x1vxdwuq" path="res://Xolonium-Bold.ttf" id="5_ykngn"]
 [ext_resource type="FontFile" uid="uid://b7dniplmdo5hr" path="res://Images/Xolonium-Bold.ttf" id="6_mv0q4"]
 [ext_resource type="Script" path="res://Scripts/ClearConsoleButton.gd" id="7_wsbqs"]
+[ext_resource type="Script" path="res://Scripts/Stop.gd" id="8_34vo2"]
 [ext_resource type="Script" path="res://Scripts/Console.gd" id="8_wmhqe"]
 
 [node name="GeneticAlgorithm" type="Node2D"]
@@ -87,6 +88,19 @@ offset_bottom = 242.0
 text = "CLEAR THE CONSOLE"
 script = ExtResource("7_wsbqs")
 
+[node name="Stop" type="Button" parent="Control"]
+layout_mode = 0
+offset_left = -95.0
+offset_top = 246.0
+offset_right = 258.0
+offset_bottom = 277.0
+tooltip_text = "STOP
+"
+disabled = true
+text = "STOP
+"
+script = ExtResource("8_34vo2")
+
 [node name="Console" type="TextEdit" parent="Control"]
 layout_mode = 0
 offset_left = -928.0
@@ -107,5 +121,6 @@ script = ExtResource("8_wmhqe")
 [connection signal="pressed" from="Control/VBoxContainer/GenerateFirstGeneration" to="Control/VBoxContainer/GenerateFirstGeneration" method="_on_pressed"]
 [connection signal="pressed" from="Control/VBoxContainer/Button" to="Control/VBoxContainer/Button" method="_on_pressed"]
 [connection signal="pressed" from="Control/Button" to="Control/Button" method="_on_pressed"]
+[connection signal="pressed" from="Control/Stop" to="Control/Stop" method="_on_pressed"]
 [connection signal="mouse_entered" from="Control/Console" to="Control/Console" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Control/Console" to="Control/Console" method="_on_mouse_exited"]
