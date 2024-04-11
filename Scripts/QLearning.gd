@@ -193,6 +193,8 @@ func start_living_process():
 					th += 1
 		if th == 0:
 			break
+	
+	await get_tree().create_timer(2.25).timeout
 	for i in players:
 		i.reward = 0
 		i.position = i.respawnPosition
