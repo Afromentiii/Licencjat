@@ -174,31 +174,16 @@ func start_genetic_procedure():
 func start_living_process():
 	console.text += "LIVING PROCESS IS STARTING... \n"
 	is_living_process_started = true
-
-	var th = 0
-	for i in players:
-		if i.t == null:
-			i.reward = 0
-			i.position = i.respawnPosition
-			i.t = Thread.new()
-			i.is_dead = false
-			
-
-	while true:
-		th = 0
-		for i in players:
-			if  i.t != null:
-				if i.t.is_started() == true:
-					i.t.wait_to_finish()
-					th += 1
-		if th == 0:
-			break
 	
-	await get_tree().create_timer(2.25).timeout
+	for i in players:
+		if  i.t != null:
+			if i.t.is_started() == true:
+				i.t.wait_to_finish()
+
+	await get_tree().create_timer(5).timeout
 	for i in players:
 		i.reward = 0
 		i.position = i.respawnPosition
-		i.t = Thread.new()
 		i.is_dead = false
 		i.t.start(i.life, Thread.PRIORITY_HIGH)
 
@@ -319,6 +304,7 @@ func _ready():
 		var p = preload("res://Scenes/player.tscn").instantiate()
 		get_parent().call_deferred("add_child",p)
 		set_player_configuration(p,i)
+		p.t = Thread.new()
 	t = Thread.new()
 	t.start(call,Thread.PRIORITY_HIGH)
 	

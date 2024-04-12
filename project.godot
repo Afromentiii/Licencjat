@@ -65,7 +65,3 @@ exit={
 2d_render/layer_1="PLAYER"
 2d_physics/layer_1="ENV"
 2d_physics/layer_2="PLAYER"
-
-[physics]
-
-common/max_physics_steps_per_frame=60
