@@ -177,14 +177,14 @@ func start_living_process():
 	console.text += "LIVING PROCESS IS STARTING... \n"
 	is_living_process_started = true
 	
-	await get_tree().create_timer(2.25).timeout
 	
 	for i in players:
 		if  i.t != null:
 			if i.t.is_started() == true:
 				i.t.wait_to_finish()
+				await i.t
 				
-	await get_tree().create_timer(2.25).timeout
+	await get_tree().create_timer(4.25).timeout
 	for i in players:
 		i.reward = 0
 		i.position = i.respawnPosition

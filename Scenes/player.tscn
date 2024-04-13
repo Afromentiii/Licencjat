@@ -152,7 +152,6 @@ func live():
 			if is_dead == true:
 				return
 	
-		
 	return 
 
 			
