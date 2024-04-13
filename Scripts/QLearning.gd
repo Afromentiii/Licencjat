@@ -53,6 +53,15 @@ func save_players_data(gen):
 	players.sort_custom(compare_p1_p2_reward)
 	max_generation_reward = players[0].reward
 	gen_reward.text = "CURRENT GENERATION MAX REWARD: " + str(max_generation_reward)
+	var index = 0
+	for i in players:
+		var new_array = []
+		for x in i.moves:
+			if x != -1:
+				new_array.append(x)
+		i.moves = new_array.duplicate()
+	
+	
 	for i in players:
 		console.text += ("Player id is: " + str(i.playerID)+ " Reward is: " + str(i.reward) + " Executed moves are: " + str(i.moves) + "\n")
 		var line = str(i.reward) + " "
@@ -180,7 +189,6 @@ func start_living_process():
 			if i.t.is_started() == true:
 				i.t.wait_to_finish()
 
-	await get_tree().create_timer(5).timeout
 	for i in players:
 		i.reward = 0
 		i.position = i.respawnPosition
@@ -221,7 +229,16 @@ func find_the_best_player_and_generate_population():
 			players[index].moves.pop_back()
 		index += 1
 
-
+	var max = 0
+	for i in players:
+		if i.moves.size() > max:
+			max = i.moves.size()
+	
+	for i in players:
+		if i.moves.size() <	max:	
+			for x in range(0, max - i.moves.size()):
+				i.moves.push_back(-1)
+	
 	'''
 	print("NEW POPULATION IS: ")
 	for i in players:

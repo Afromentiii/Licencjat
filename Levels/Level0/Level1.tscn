@@ -66,6 +66,7 @@ layer_0/tile_data = PackedInt32Array(65527, 458752, 6, 65528, 458752, 6, 65529, 
 position = Vector2(-645, -155)
 path_to_conf = "res://Levels/Level0/GeneticAlgorithm1/conf.txt"
 path_to_genetic = "res://Levels/Level0/GeneticAlgorithm1/"
+gen_population = 128
 
 [node name="MovableCamera" parent="." instance=ExtResource("3_cu5w0")]
 position = Vector2(-41, -245)

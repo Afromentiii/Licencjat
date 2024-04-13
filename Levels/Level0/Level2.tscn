@@ -50,7 +50,7 @@ position = Vector2(3317, -450)
 position = Vector2(-678, -196)
 path_to_conf = "res://Levels/Level0/GeneticAlgorithm2/conf.txt"
 path_to_genetic = "res://Levels/Level0/GeneticAlgorithm2/"
-gen_population = 48
+gen_population = 128
 
 [node name="Lava" type="Area2D" parent="."]
 collision_layer = 32
