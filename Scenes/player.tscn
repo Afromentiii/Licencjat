@@ -1,9 +1,9 @@
 [gd_scene load_steps=15 format=3 uid="uid://b5b6ue2mtp10h"]
 
-[ext_resource type="Texture2D" uid="uid://vjh6tf1p0ivg" path="res://Images/ham.png" id="1_f5gg4"]
-[ext_resource type="Texture2D" uid="uid://c025oeg7qnj05" path="res://Images/test.png" id="2_tnck4"]
-[ext_resource type="Texture2D" uid="uid://c7nttvm4xgmuj" path="res://Images/left2.png" id="3_mwvfn"]
-[ext_resource type="Texture2D" uid="uid://d1raj3l4p0v5n" path="res://Images/left.png" id="4_p6upc"]
+[ext_resource type="Texture2D" uid="uid://vjh6tf1p0ivg" path="res://Images/Player/ham.png" id="1_f5gg4"]
+[ext_resource type="Texture2D" uid="uid://c025oeg7qnj05" path="res://Images/Player/test.png" id="2_tnck4"]
+[ext_resource type="Texture2D" uid="uid://c7nttvm4xgmuj" path="res://Images/Player/left2.png" id="3_mwvfn"]
+[ext_resource type="Texture2D" uid="uid://d1raj3l4p0v5n" path="res://Images/Player/left.png" id="4_p6upc"]
 
 [sub_resource type="GDScript" id="GDScript_5cbp6"]
 script/source = "extends CharacterBody2D
@@ -118,17 +118,13 @@ func live():
 	if is_dead == false:
 		if moves.is_empty() == false:
 			for move in moves:
-				if move == -1:
-					await get_tree().create_timer(2.35).timeout
-				else:
-					previous_pos_x = pos_x
-					move(move)
-					await get_tree().create_timer(2.35).timeout
-					move_end_pos_x = pos_x
+				previous_pos_x = pos_x
+				move(move)
+				await get_tree().create_timer(2.75).timeout
+				move_end_pos_x = pos_x
 					
-					if move_end_pos_x > previous_pos_x:
-						move_reward(move)
-				index += 1
+				if move_end_pos_x > previous_pos_x:
+					move_reward(move)
 		
 		while true:
 			var move = randi_range(1,6)
@@ -136,7 +132,7 @@ func live():
 			moves.append(move)
 
 			move(move)
-			await get_tree().create_timer(2.35).timeout
+			await get_tree().create_timer(2.75).timeout
 		
 			move_end_pos_x = pos_x
 			
@@ -154,12 +150,9 @@ func live():
 					respawn()
 			
 			if is_dead == true:
-				if t.is_alive() == true:
-					t.wait_to_finish()
 				return
 	
-	if t.is_alive() == true:
-		t.wait_to_finish()			
+		
 	return 
 
 			
