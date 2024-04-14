@@ -41,13 +41,11 @@ var t : Thread
 func just_load_and_execute_moves():
 	for i in moves:
 		move(i)
-		await get_tree().create_timer(2.35).timeout
+		await get_tree().create_timer(2.75).timeout
 	moves.clear()
 	
-	await get_tree().create_timer(0.1).timeout
 	is_dead = true
 	self.position = respawnPosition
-	t.wait_to_finish()
 	return
 
 func move_reward(move : int):

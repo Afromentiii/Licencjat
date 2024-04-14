@@ -106,12 +106,21 @@ func load_generation_procedure():
 				load_players_data(path)
 				for i in players:
 					console.text += ("Player id is: " + str(i.playerID)+ " Reward is: " + str(i.reward) + " Executed moves are: " + str(i.moves) + "\n")
-				await get_tree().create_timer(0.75).timeout
+				
+				await get_tree().create_timer(gen_population * 0.1 / 2).timeout
+				
+				for i in players:
+					if  i.t != null:
+						if i.t.is_started() == true:
+							await i.t
+							i.t.wait_to_finish()
+							await i.t
+						
 				for i in players:
 					i.position = i.respawnPosition
-					i.t = Thread.new()
 					i.is_dead = false
 					i.t.start(i.loading, Thread.PRIORITY_HIGH)		
+					
 				is_generation_loaded = true
 			else:
 				console.text += "GENERATION IS NOT DEAD!!! \n"
@@ -289,6 +298,17 @@ func set_player_configuration(p, i):
 
 func _ready():
 	if FileAccess.file_exists(path_to_conf):
+		var output = []
+		var output2 = []
+		OS.execute("wmic", ["cpu", "get", "NumberOfLogicalProcessors"],output)
+		var text = output[0].split("\n")
+		print(text[1])
+
+		OS.execute("wmic", ["cpu", "get", "NumberOfCores"],output2)
+		var text2 = output2[0].split("\n")
+		print(text2[1])
+		
+		gen_population = int(text[1]) * int(text2[1])
 		var conf = FileAccess.open(path_to_conf, FileAccess.WRITE)
 		var line = "GENERATION_POPULATION " + str(gen_population)
 		var line2 = "LAST_GENERATION " + str(gen_last)
@@ -304,7 +324,7 @@ func _ready():
 		while FileAccess.file_exists(path_to_genetic + "gen" + str(counter) + ".txt"):
 			dir.remove(path_to_genetic + "gen" + str(counter) + ".txt")
 			counter += 1
-
+	
 	for i in range(0, gen_population):
 		var p = preload("res://Scenes/player.tscn").instantiate()
 		get_parent().call_deferred("add_child",p)
