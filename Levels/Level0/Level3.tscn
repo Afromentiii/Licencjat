@@ -84,7 +84,7 @@ position = Vector2(491, -225)
 position = Vector2(-36, -451)
 path_to_conf = "res://Levels/Level0/GeneticAlgorithm3/conf.txt"
 path_to_genetic = "res://Levels/Level0/GeneticAlgorithm3/"
-gen_population = 128
+gen_population = 256
 
 [node name="EndGame" parent="." instance=ExtResource("5_8fl82")]
 position = Vector2(6953, -131)

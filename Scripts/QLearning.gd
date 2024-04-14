@@ -181,10 +181,11 @@ func start_living_process():
 	for i in players:
 		if  i.t != null:
 			if i.t.is_started() == true:
+				await i.t
 				i.t.wait_to_finish()
 				await i.t
 				
-	await get_tree().create_timer(gen_population * 0.1 / 2).timeout
+
 	for i in players:
 		i.reward = 0
 		i.position = i.respawnPosition
