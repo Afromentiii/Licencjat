@@ -305,7 +305,7 @@ func _ready():
 		OS.execute("wmic", ["cpu", "get", "NumberOfCores"],output2)
 		var text2 = output2[0].split("\n")
 
-		#gen_population = int(text[1]) * int(text2[1]) + 80
+		gen_population = int(text[1]) * int(text2[1]) - 2
 		var conf = FileAccess.open(path_to_conf, FileAccess.WRITE)
 		var line = "GENERATION_POPULATION " + str(gen_population)
 		var line2 = "LAST_GENERATION " + str(gen_last)
