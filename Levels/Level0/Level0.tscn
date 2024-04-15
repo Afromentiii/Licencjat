@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://b706vbylgsy2b"]
+[gd_scene load_steps=11 format=3 uid="uid://b706vbylgsy2b"]
 
 [ext_resource type="Script" path="res://Scripts/Level0.gd" id="1_uq3w7"]
 [ext_resource type="PackedScene" uid="uid://cjfwkrdtab2vt" path="res://TileMap/tile_map.tscn" id="2_8tku7"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://d0l3qj6wrlljv" path="res://Scenes/end_game.tscn" id="5_vcahi"]
 [ext_resource type="Script" path="res://Scripts/BlackLavaLvl0.gd" id="6_xscx8"]
 [ext_resource type="PackedScene" uid="uid://dhvaxwkb4lgul" path="res://Scenes/enemy.tscn" id="7_ni424"]
+[ext_resource type="PackedScene" uid="uid://dw12c7l0ycsl" path="res://Scenes/EnemyArea.tscn" id="8_fbwjq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mbfun"]
 size = Vector2(800, 28)
@@ -50,7 +51,9 @@ shape = SubResource("RectangleShape2D_mbfun")
 position = Vector2(1441, 79.5)
 shape = SubResource("RectangleShape2D_s3tn4")
 
+[node name="Area2D" parent="." instance=ExtResource("8_fbwjq")]
+
 [node name="Enemy" parent="." instance=ExtResource("7_ni424")]
-position = Vector2(32, -30)
+position = Vector2(-58, -28)
 
 [connection signal="body_entered" from="BlackLava" to="BlackLava" method="_on_body_entered"]

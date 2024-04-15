@@ -10,11 +10,11 @@ size = Vector2(20, 60)
 
 [node name="Area2D" type="Area2D"]
 collision_layer = 512
-collision_mask = 257
+collision_mask = 256
 script = ExtResource("1_wjd70")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-126.213, 1.20013)
+position = Vector2(-247.213, 1.20013)
 shape = SubResource("RectangleShape2D_kuehy")
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
