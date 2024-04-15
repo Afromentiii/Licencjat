@@ -73,10 +73,10 @@ size = Vector2(64, 28)
 script = ExtResource("1_8rf28")
 
 [node name="ColorRect" type="ColorRect" parent="."]
-offset_left = -2904.0
-offset_top = -1953.0
-offset_right = 7858.0
-offset_bottom = 1727.0
+offset_left = -18077.0
+offset_top = -11227.0
+offset_right = 23613.0
+offset_bottom = 8207.0
 color = Color(0, 0.0235294, 0.054902, 1)
 
 [node name="TileMap" parent="." instance=ExtResource("2_5l37k")]
