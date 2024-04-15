@@ -111,26 +111,25 @@ func print_gen_data():
 	print(\"Player id is: \" + str(playerID)+ \" Reward is: \" + str(reward) + \" Executed moves are: \" + str(moves))
 
 func live():
-	await get_tree().create_timer(0.55).timeout
 	var index = 0
 	if is_dead == false:
 		if moves.is_empty() == false:
 			for move in moves:
 				previous_pos_x = pos_x
 				move(move)
-				await get_tree().create_timer(2.75).timeout
+				await get_tree().create_timer(2.25).timeout
 				move_end_pos_x = pos_x
 					
 				if move_end_pos_x > previous_pos_x:
 					move_reward(move)
 		
-		while true:
+		while true:	
 			var move = randi_range(1,6)
 			previous_pos_x = pos_x
 			moves.append(move)
 
 			move(move)
-			await get_tree().create_timer(2.75).timeout
+			await get_tree().create_timer(2.25).timeout
 		
 			move_end_pos_x = pos_x
 			
@@ -149,6 +148,7 @@ func live():
 			
 			if is_dead == true:
 				return
+			
 	
 	return 
 

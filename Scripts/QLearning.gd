@@ -185,16 +185,15 @@ func start_genetic_procedure():
 func start_living_process():
 	console.text += "LIVING PROCESS IS STARTING... \n"
 	is_living_process_started = true
+	await get_tree().create_timer(gen_population * 0.15 / 2 ).timeout
 	
-	await get_tree().create_timer(gen_population * 0.1 / 2).timeout
 	for i in players:
 		if  i.t != null:
 			if i.t.is_started() == true:
-				await i.t
 				i.t.wait_to_finish()
 				await i.t
 				
-
+	await get_tree().create_timer(gen_population * 0.15 / 2 ).timeout
 	for i in players:
 		i.reward = 0
 		i.position = i.respawnPosition
@@ -302,13 +301,11 @@ func _ready():
 		var output2 = []
 		OS.execute("wmic", ["cpu", "get", "NumberOfLogicalProcessors"],output)
 		var text = output[0].split("\n")
-		print(text[1])
 
 		OS.execute("wmic", ["cpu", "get", "NumberOfCores"],output2)
 		var text2 = output2[0].split("\n")
-		print(text2[1])
-		
-		gen_population = int(text[1]) * int(text2[1])
+
+		#gen_population = int(text[1]) * int(text2[1]) + 80
 		var conf = FileAccess.open(path_to_conf, FileAccess.WRITE)
 		var line = "GENERATION_POPULATION " + str(gen_population)
 		var line2 = "LAST_GENERATION " + str(gen_last)
