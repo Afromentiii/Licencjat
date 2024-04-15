@@ -41,11 +41,12 @@ var t : Thread
 func just_load_and_execute_moves():
 	for i in moves:
 		move(i)
-		await get_tree().create_timer(2.75).timeout
+		await get_tree().create_timer(2.25).timeout
 	moves.clear()
 	
 	is_dead = true
 	self.position = respawnPosition
+	t.wait_to_finish()
 	return
 
 func move_reward(move : int):
@@ -140,7 +141,7 @@ func live():
 			else:
 				iter_stacked_counter += 1
 				reward -= 5
-				if iter_stacked_counter == 3:
+				if iter_stacked_counter == 2:
 					for i in range (0,2):
 						moves.pop_back()
 					reward -= 375
