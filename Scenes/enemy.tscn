@@ -61,13 +61,13 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_12p5v"]
-size = Vector2(90.5, 33)
+size = Vector2(90.5, 35)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pa7v8"]
-size = Vector2(2, 31)
+size = Vector2(1, 31)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2wj7r"]
-size = Vector2(2, 31)
+size = Vector2(1, 31)
 
 [node name="Enemy" type="CharacterBody2D"]
 position = Vector2(-36.7866, -32.2001)
@@ -83,7 +83,7 @@ animation = &"move"
 frame_progress = 0.740026
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(39.7866, 14.7001)
+position = Vector2(39.7866, 13.7001)
 shape = SubResource("RectangleShape2D_12p5v")
 
 [node name="hitbox" type="Area2D" parent="."]
