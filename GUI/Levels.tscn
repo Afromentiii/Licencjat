@@ -43,6 +43,7 @@ alignment = 1
 [node name="README" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(256, 64)
 layout_mode = 2
+theme_override_colors/font_hover_color = Color(0.0980392, 0.878431, 0.0862745, 1)
 theme_override_fonts/font = ExtResource("1_fgydi")
 theme_override_font_sizes/font_size = 32
 text = "READ_ME"
@@ -115,7 +116,9 @@ text = "                              README
 
 7. A result of 99999 means that the individual has reached the endpoint.
 
-8. Clicking exit will open the menu window."
+8. Clicking exit will open the menu window.
+
+9. Clicking F1 will move camera to console."
 editable = false
 context_menu_enabled = false
 shortcut_keys_enabled = false
@@ -125,6 +128,7 @@ drag_and_drop_selection_enabled = false
 virtual_keyboard_enabled = false
 middle_mouse_paste_enabled = false
 wrap_mode = 1
+scroll_vertical = 1.0
 
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/README" to="." method="_on_readme_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/LEVEL_0" to="." method="_on_level_0_pressed"]

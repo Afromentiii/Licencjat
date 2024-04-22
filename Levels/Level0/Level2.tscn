@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://8met7xwesdys"]
+[gd_scene load_steps=15 format=3 uid="uid://8met7xwesdys"]
 
 [ext_resource type="Script" path="res://Scripts/Level2.gd" id="1_qs0qx"]
 [ext_resource type="PackedScene" uid="uid://cjfwkrdtab2vt" path="res://TileMap/tile_map.tscn" id="2_igg7u"]
@@ -8,8 +8,6 @@
 [ext_resource type="Script" path="res://Scripts/Lava.gd" id="7_uvbdt"]
 [ext_resource type="PackedScene" uid="uid://b55i0640wr7ym" path="res://Scenes/huge_jump_area.tscn" id="8_fupwg"]
 [ext_resource type="PackedScene" uid="uid://c5l5piblixape" path="res://Scenes/LavaColumn.tscn" id="8_i6o3h"]
-[ext_resource type="Texture2D" uid="uid://bvv67h5clynj3" path="res://Images/wolfsheet6.png" id="9_em3ye"]
-[ext_resource type="Texture2D" uid="uid://bv2mf86uov3ww" path="res://Images/wolfsheet6_changed.png" id="10_8jhn1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vv105"]
 size = Vector2(448, 27)
@@ -28,61 +26,6 @@ size = Vector2(965.848, 24)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1syla"]
 size = Vector2(963.02, 23)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_vsklm"]
-atlas = ExtResource("9_em3ye")
-region = Rect2(320, 0, 64, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_0aoyp"]
-atlas = ExtResource("10_8jhn1")
-region = Rect2(320, 96, 64, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ssf4v"]
-atlas = ExtResource("10_8jhn1")
-region = Rect2(384, 96, 64, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_5d2ws"]
-atlas = ExtResource("10_8jhn1")
-region = Rect2(448, 96, 64, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_0hpuc"]
-atlas = ExtResource("10_8jhn1")
-region = Rect2(512, 96, 64, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_qdh5n"]
-atlas = ExtResource("10_8jhn1")
-region = Rect2(576, 96, 64, 32)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_bv5w1"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_vsklm")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_0aoyp")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ssf4v")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_5d2ws")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_0hpuc")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_qdh5n")
-}],
-"loop": true,
-"name": &"move",
-"speed": 5.0
-}]
 
 [node name="Level2" type="Node2D"]
 script = ExtResource("1_qs0qx")
@@ -158,11 +101,5 @@ position = Vector2(2448, -512)
 
 [node name="HugeJumpArea7" parent="." instance=ExtResource("8_fupwg")]
 position = Vector2(2990.87, -506.654)
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(39.2866, 10.4501)
-scale = Vector2(1.42188, 1.32812)
-sprite_frames = SubResource("SpriteFrames_bv5w1")
-animation = &"move"
 
 [connection signal="body_entered" from="Lava" to="Lava" method="_on_body_entered"]

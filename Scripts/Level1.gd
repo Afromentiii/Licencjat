@@ -12,7 +12,9 @@ func _process(_delta):
 				i.t.wait_to_finish()
 		get_node("GeneticAlgorithm").t.wait_to_finish()		
 		get_tree().change_scene_to_packed(load("res://GUI/Levels.tscn"))
-
+	
+	if Input.is_action_just_pressed("Camera_pos_spawn"):
+		get_node("MovableCamera").position = spawnPos
 
 
 
