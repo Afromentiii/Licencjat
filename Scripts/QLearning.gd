@@ -136,6 +136,8 @@ func generate_first_gen_procedure():
 			is_population_dead()
 			if is_generation_dead == true:
 				generate_first_gen.disabled = true
+				start_genetic_algorithm.disabled = false
+				load_gen_button.disabled = false
 				is_generation_dead = false
 				if is_living_process_started == false:
 					start_living_process()
@@ -296,6 +298,9 @@ func set_player_configuration(p, i):
 		players.append(p)
 
 func _ready():
+	start_genetic_algorithm.disabled = true
+	load_gen_button.disabled = true
+	
 	if FileAccess.file_exists(path_to_conf):
 		var output = []
 		var output2 = []
