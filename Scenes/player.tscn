@@ -1,9 +1,9 @@
 [gd_scene load_steps=15 format=3 uid="uid://b5b6ue2mtp10h"]
 
 [ext_resource type="Texture2D" uid="uid://vjh6tf1p0ivg" path="res://Images/ham.png" id="1_f5gg4"]
-[ext_resource type="Texture2D" uid="uid://c025oeg7qnj05" path="res://Images/test.png" id="2_tnck4"]
-[ext_resource type="Texture2D" uid="uid://c7nttvm4xgmuj" path="res://Images/left2.png" id="3_mwvfn"]
-[ext_resource type="Texture2D" uid="uid://d1raj3l4p0v5n" path="res://Images/left.png" id="4_p6upc"]
+[ext_resource type="Texture2D" uid="uid://c025oeg7qnj05" path="res://Images/Player/test.png" id="2_tnck4"]
+[ext_resource type="Texture2D" uid="uid://c7nttvm4xgmuj" path="res://Images/Player/left2.png" id="3_mwvfn"]
+[ext_resource type="Texture2D" uid="uid://d1raj3l4p0v5n" path="res://Images/Player/left.png" id="4_p6upc"]
 
 [sub_resource type="GDScript" id="GDScript_5cbp6"]
 script/source = "extends CharacterBody2D
@@ -41,7 +41,7 @@ var t : Thread
 func just_load_and_execute_moves():
 	for i in moves:
 		move(i)
-		await get_tree().create_timer(2.15).timeout
+		await get_tree().create_timer(2.35).timeout
 	moves.clear()
 	
 	respawn()
@@ -60,8 +60,8 @@ func move_reward(move : int):
 		reward += 25
 	elif move == 5:
 		reward += 50
-	elif move == 5:
-		reward += 75
+	elif move == 6:
+		reward += 65
 
 func move(move : int):
 	#index_short_right = 0
@@ -107,14 +107,14 @@ func move(move : int):
 		is_moving_right = false		
 		
 func print_gen_data():
-	print(\"Player distance is: \" + str(distance_after_death) + \" Player id is: \" + str(playerID)+ \" Reward is: \" + str(reward) + \" Executed moves are: \" + str(moves))
+	print(\"Player id is: \" + str(playerID)+ \" Reward is: \" + str(reward) + \" Executed moves are: \" + str(moves))
 
 func live():
 	if moves.is_empty() == false:
 		for move in moves:
 			previous_pos_x = pos_x
 			move(move)
-			await get_tree().create_timer(2.15).timeout
+			await get_tree().create_timer(2.35).timeout
 			move_end_pos_x = pos_x
 			
 			if move_end_pos_x > previous_pos_x:
@@ -127,7 +127,7 @@ func live():
 			moves.append(move)
 
 			move(move)
-			await get_tree().create_timer(2.15).timeout
+			await get_tree().create_timer(2.35).timeout
 		
 			move_end_pos_x = pos_x
 			
@@ -138,18 +138,20 @@ func live():
 			else:
 				iter_stacked_counter += 1
 				reward -= 5
-				if iter_stacked_counter == 5:
-					reward -= 200
+				if iter_stacked_counter == 3:
+					for i in range (0,2):
+						moves.pop_back()
+					reward -= 375
 					respawn()
 			
 			if is_dead == true:
 				break
-				
+	
 	t.wait_to_finish()
 			
 func _ready():
 	self.position = get_parent().spawnPos
-	
+
 func endGame():
 	reward = 999999
 	await get_tree().create_timer(0.75).timeout
@@ -167,7 +169,6 @@ func respawn():
 	self.position = respawnPosition
 	self.is_jumping = false
 	self.is_moving_right = false
-	print_gen_data()
 	
 	self.move_end_pos_x = 0
 	self.previous_pos_x = 0
@@ -187,8 +188,12 @@ func blackMatter_dmg() -> void:
 	$healthBar.value -= 100
 	reward -= 300
 
+func cave_spike_dmg() -> void:
+	reward -= 200
+	$healthBar.value  -= 100
+
 func hugeJump() -> void:
-	velocity.y = -650
+	velocity.y = -700
 
 func spike_dmg() -> void:
 	$healthBar.value -= 10
