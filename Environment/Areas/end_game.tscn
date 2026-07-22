@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://d0l3qj6wrlljv"]
+
+[ext_resource type="Script" path="res://Core/Managers/EndGame.gd" id="1_bhgi6"]
+[ext_resource type="Texture2D" uid="uid://cpq73n0wnk3eh" path="res://Assets/Images/PngItem_5080937.png" id="2_t5v7c"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5cf1r"]
+size = Vector2(49, 86.5)
+
+[node name="EndGame" type="Area2D"]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_bhgi6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(15.5, -42.75)
+shape = SubResource("RectangleShape2D_5cf1r")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(15, -36.75)
+scale = Vector2(0.0669746, 0.0596477)
+texture = ExtResource("2_t5v7c")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

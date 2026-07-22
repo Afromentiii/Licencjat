@@ -1,13 +1,13 @@
 [gd_scene load_steps=29 format=3 uid="uid://b8615tvkblu4w"]
 
-[ext_resource type="Script" path="res://Scripts/Level3.gd" id="1_8rf28"]
-[ext_resource type="PackedScene" uid="uid://cjfwkrdtab2vt" path="res://TileMap/tile_map.tscn" id="2_5l37k"]
-[ext_resource type="PackedScene" uid="uid://ok2hhuga753" path="res://Scenes/movable_camera.tscn" id="3_xchyf"]
-[ext_resource type="PackedScene" uid="uid://cax4mp0klk1yc" path="res://Scenes/genetic_algorithm.tscn" id="4_efads"]
-[ext_resource type="PackedScene" uid="uid://d0l3qj6wrlljv" path="res://Scenes/end_game.tscn" id="5_8fl82"]
-[ext_resource type="Script" path="res://Scripts/BlackMatter3.gd" id="7_jl5lm"]
-[ext_resource type="PackedScene" uid="uid://c5l5piblixape" path="res://Scenes/LavaColumn.tscn" id="8_k5cfw"]
-[ext_resource type="PackedScene" uid="uid://b55i0640wr7ym" path="res://Scenes/huge_jump_area.tscn" id="8_ktbpl"]
+[ext_resource type="Script" path="res://Levels/Level3.gd" id="1_8rf28"]
+[ext_resource type="PackedScene" uid="uid://cjfwkrdtab2vt" path="res://Environment/TileMaps/tile_map.tscn" id="2_5l37k"]
+[ext_resource type="PackedScene" uid="uid://ok2hhuga753" path="res://Core/Camera/movable_camera.tscn" id="3_xchyf"]
+[ext_resource type="PackedScene" uid="uid://cax4mp0klk1yc" path="res://Core/GeneticAlgorithm/genetic_algorithm.tscn" id="4_efads"]
+[ext_resource type="PackedScene" uid="uid://d0l3qj6wrlljv" path="res://Environment/Areas/end_game.tscn" id="5_8fl82"]
+[ext_resource type="Script" path="res://Environment/Hazards/BlackMatter3.gd" id="7_jl5lm"]
+[ext_resource type="PackedScene" uid="uid://c5l5piblixape" path="res://Environment/Hazards/LavaColumn.tscn" id="8_k5cfw"]
+[ext_resource type="PackedScene" uid="uid://b55i0640wr7ym" path="res://Environment/Areas/huge_jump_area.tscn" id="8_ktbpl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w3t0u"]
 size = Vector2(705.91, 28.9536)

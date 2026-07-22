@@ -1,0 +1,126 @@
+[gd_scene format=3 uid="uid://cax4mp0klk1yc"]
+
+[ext_resource type="Script" uid="uid://bl0nxkwowchj4" path="res://Core/GeneticAlgorithm/algorithm.gd" id="1_il5dt"]
+[ext_resource type="Script" uid="uid://vr7ipgeblic3" path="res://UI/GeneticUI/StartGenetic.gd" id="2_cxr8h"]
+[ext_resource type="Script" uid="uid://jsbx8eb16i2d" path="res://UI/GeneticUI/Button.gd" id="2_hiyb4"]
+[ext_resource type="Script" uid="uid://cvdnjowksyr8a" path="res://UI/GeneticUI/GenerateFirstGeneration.gd" id="2_pngvn"]
+[ext_resource type="FontFile" uid="uid://ddku7x1vxdwuq" path="res://Assets/Fonts/Xolonium-Bold.ttf" id="5_ykngn"]
+[ext_resource type="FontFile" uid="uid://b7dniplmdo5hr" path="res://Images/Xolonium-Bold.ttf" id="6_mv0q4"]
+[ext_resource type="Script" uid="uid://d2ns4hbqfv1xn" path="res://UI/GeneticUI/ClearConsoleButton.gd" id="7_wsbqs"]
+[ext_resource type="Script" uid="uid://c1f73svtodvxb" path="res://UI/GeneticUI/Stop.gd" id="8_34vo2"]
+[ext_resource type="Script" uid="uid://bx5hihoaqe1n6" path="res://UI/GeneticUI/Console.gd" id="8_wmhqe"]
+
+[node name="GeneticAlgorithm" type="Node2D" unique_id=1903435126]
+script = ExtResource("1_il5dt")
+
+[node name="Control" type="Control" parent="." unique_id=1949254200]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 230.0
+offset_top = -250.0
+offset_right = 270.0
+offset_bottom = -210.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control" unique_id=1756640983]
+layout_mode = 0
+offset_left = -96.0
+offset_right = 257.0
+offset_bottom = 40.0
+
+[node name="StartGenetic" type="Button" parent="Control/VBoxContainer" unique_id=344603004]
+layout_mode = 2
+text = "START GENETIC ALGORITHM"
+script = ExtResource("2_cxr8h")
+
+[node name="GenerateFirstGeneration" type="Button" parent="Control/VBoxContainer" unique_id=901042935]
+layout_mode = 2
+text = "GENERATE FIRST GENERATION"
+script = ExtResource("2_pngvn")
+
+[node name="Button" type="Button" parent="Control/VBoxContainer" unique_id=2003445550]
+layout_mode = 2
+text = "LOAD GENERATION"
+script = ExtResource("2_hiyb4")
+
+[node name="TextEdit" type="TextEdit" parent="Control/VBoxContainer/Button" unique_id=1099358181]
+layout_mode = 0
+offset_left = -1.0
+offset_top = 35.0
+offset_right = 354.0
+offset_bottom = 66.0
+text = "Input id of gen or iterations of genetic
+
+"
+
+[node name="Population" type="Label" parent="Control" unique_id=1278874776]
+layout_mode = 0
+offset_left = -95.0
+offset_top = 164.0
+offset_right = 256.0
+offset_bottom = 187.0
+theme_override_fonts/font = ExtResource("5_ykngn")
+text = "GENERATION POPULATION: "
+
+[node name="Generation" type="Label" parent="Control" unique_id=1617751524]
+layout_mode = 0
+offset_left = -94.0
+offset_top = 186.0
+offset_right = 20.0
+offset_bottom = 209.0
+theme_override_fonts/font = ExtResource("6_mv0q4")
+text = "GEN COUNT:"
+
+[node name="MaxGenReward" type="Label" parent="Control" unique_id=1170595005]
+layout_mode = 0
+offset_left = -94.0
+offset_top = 141.0
+offset_right = 265.0
+offset_bottom = 164.0
+theme_override_fonts/font = ExtResource("6_mv0q4")
+text = "CURRENT GENERATION MAX REWARD: "
+
+[node name="Button" type="Button" parent="Control" unique_id=527096596]
+layout_mode = 0
+offset_left = -95.0
+offset_top = 211.0
+offset_right = 258.0
+offset_bottom = 242.0
+text = "CLEAR THE CONSOLE"
+script = ExtResource("7_wsbqs")
+
+[node name="Stop" type="Button" parent="Control" unique_id=902921990]
+layout_mode = 0
+offset_left = -95.0
+offset_top = 246.0
+offset_right = 258.0
+offset_bottom = 277.0
+tooltip_text = "STOP
+"
+disabled = true
+text = "STOP
+"
+script = ExtResource("8_34vo2")
+
+[node name="Console" type="TextEdit" parent="Control" unique_id=279301191]
+layout_mode = 0
+offset_left = -928.0
+offset_right = -108.0
+offset_bottom = 682.0
+theme_override_fonts/font = ExtResource("5_ykngn")
+editable = false
+context_menu_enabled = false
+shortcut_keys_enabled = false
+selecting_enabled = false
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
+middle_mouse_paste_enabled = false
+virtual_keyboard_enabled = false
+script = ExtResource("8_wmhqe")
+
+[connection signal="pressed" from="Control/VBoxContainer/StartGenetic" to="Control/VBoxContainer/StartGenetic" method="_on_pressed"]
+[connection signal="pressed" from="Control/VBoxContainer/GenerateFirstGeneration" to="Control/VBoxContainer/GenerateFirstGeneration" method="_on_pressed"]
+[connection signal="pressed" from="Control/VBoxContainer/Button" to="Control/VBoxContainer/Button" method="_on_pressed"]
+[connection signal="pressed" from="Control/Button" to="Control/Button" method="_on_pressed"]
+[connection signal="pressed" from="Control/Stop" to="Control/Stop" method="_on_pressed"]
+[connection signal="mouse_entered" from="Control/Console" to="Control/Console" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Control/Console" to="Control/Console" method="_on_mouse_exited"]

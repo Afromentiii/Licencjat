@@ -1,13 +1,13 @@
 [gd_scene load_steps=22 format=3 uid="uid://cts5yyj0xhsil"]
 
-[ext_resource type="Script" path="res://Scripts/Level1.gd" id="1_7ni3g"]
-[ext_resource type="PackedScene" uid="uid://cjfwkrdtab2vt" path="res://TileMap/tile_map.tscn" id="1_tshjh"]
-[ext_resource type="PackedScene" uid="uid://cax4mp0klk1yc" path="res://Scenes/genetic_algorithm.tscn" id="2_kl8bo"]
-[ext_resource type="PackedScene" uid="uid://ok2hhuga753" path="res://Scenes/movable_camera.tscn" id="3_cu5w0"]
-[ext_resource type="PackedScene" uid="uid://d0l3qj6wrlljv" path="res://Scenes/end_game.tscn" id="5_coogj"]
-[ext_resource type="Script" path="res://Scripts/BlackMatter1.gd" id="6_673m2"]
-[ext_resource type="Script" path="res://Scripts/CaveSpike.gd" id="7_1cg78"]
-[ext_resource type="PackedScene" uid="uid://b55i0640wr7ym" path="res://Scenes/huge_jump_area.tscn" id="7_w88qp"]
+[ext_resource type="Script" path="res://Levels/Level1.gd" id="1_7ni3g"]
+[ext_resource type="PackedScene" uid="uid://cjfwkrdtab2vt" path="res://Environment/TileMaps/tile_map.tscn" id="1_tshjh"]
+[ext_resource type="PackedScene" uid="uid://cax4mp0klk1yc" path="res://Core/GeneticAlgorithm/genetic_algorithm.tscn" id="2_kl8bo"]
+[ext_resource type="PackedScene" uid="uid://ok2hhuga753" path="res://Core/Camera/movable_camera.tscn" id="3_cu5w0"]
+[ext_resource type="PackedScene" uid="uid://d0l3qj6wrlljv" path="res://Environment/Areas/end_game.tscn" id="5_coogj"]
+[ext_resource type="Script" path="res://Environment/Hazards/BlackMatter1.gd" id="6_673m2"]
+[ext_resource type="Script" path="res://Environment/Hazards/CaveSpike.gd" id="7_1cg78"]
+[ext_resource type="PackedScene" uid="uid://b55i0640wr7ym" path="res://Environment/Areas/huge_jump_area.tscn" id="7_w88qp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_783of"]
 size = Vector2(160, 29)
