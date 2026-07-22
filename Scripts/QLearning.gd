@@ -1,25 +1,33 @@
 extends Node2D
 
-@onready var player = get_parent().get_node("Player")
+
 var iter = 0
 var states = []
 var call = Callable(self, "learn")
+var players = []
 
 func learn():
-	var move 
-	var time
+	await get_tree().create_timer(2).timeout
 	while true:
-		iter += 1
-		move = randi_range(0,2)
-		time = randf_range(0.0,0.4)
-		player.move(move, time)
-		await get_tree().create_timer(time + 0.05).timeout
+		for i in players:
+			var move = randi_range(0,1)
+			i.move(move,randf_range(0,0.5))
+		await get_tree().create_timer(0.5).timeout
+
 
 	
 func _ready():
-	#var thread = Thread.new()
-	#thread.start(call, Thread.PRIORITY_HIGH)
-	pass
+	for i in range(0,1):
+		var p1 = preload("res://Scenes/player.tscn").instantiate()
+		get_parent().call_deferred("add_child",p1)
+		p1.position = get_parent().spawnPos
+		players.append(p1)
+
+	var t = Thread.new()
+	t.start(call,Thread.PRIORITY_HIGH)
+	
+	
+	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
