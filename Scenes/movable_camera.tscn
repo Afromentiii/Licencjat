@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://ok2hhuga753"]
 
-[ext_resource type="Script" path="res://MovableCamera.gd" id="1_tbihh"]
+[ext_resource type="Script" path="res://Scripts/MovableCamera.gd" id="1_tbihh"]
 
 [node name="MovableCamera" type="Camera2D"]
 position = Vector2(-480, -113)
