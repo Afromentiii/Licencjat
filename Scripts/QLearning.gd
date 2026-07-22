@@ -11,6 +11,7 @@ extends Node2D
 @onready var generation_label = $Control/Generation
 @onready var gen_reward = $Control/MaxGenReward
 @onready var console = $Control/Console
+@onready var stopButton = $Control/Stop
 
 var is_generation_dead : bool = true
 var is_generation_loaded: bool = false
@@ -36,7 +37,7 @@ var genetic_iterations = 0
 var genetic_iterations_saved = 0
 var genetic_iter = 0
 var player_moves_is_empty_counter = 0
-
+var t : Thread
 func overide_conf():
 	var conf = FileAccess.open(path_to_conf, FileAccess.WRITE)
 	conf.store_line("GENERATION_POPULATION " + str(gen_population))
@@ -52,6 +53,8 @@ func save_players_data(gen):
 	players.sort_custom(compare_p1_p2_reward)
 	max_generation_reward = players[0].reward
 	gen_reward.text = "CURRENT GENERATION MAX REWARD: " + str(max_generation_reward)
+	var index = 0
+	
 	for i in players:
 		console.text += ("Player id is: " + str(i.playerID)+ " Reward is: " + str(i.reward) + " Executed moves are: " + str(i.moves) + "\n")
 		var line = str(i.reward) + " "
@@ -103,12 +106,21 @@ func load_generation_procedure():
 				load_players_data(path)
 				for i in players:
 					console.text += ("Player id is: " + str(i.playerID)+ " Reward is: " + str(i.reward) + " Executed moves are: " + str(i.moves) + "\n")
-				await get_tree().create_timer(0.75).timeout
+				
+				await get_tree().create_timer(gen_population * 0.1 / 2).timeout
+				
+				for i in players:
+					if  i.t != null:
+						if i.t.is_started() == true:
+							await i.t
+							i.t.wait_to_finish()
+							await i.t
+						
 				for i in players:
 					i.position = i.respawnPosition
-					i.t = Thread.new()
 					i.is_dead = false
 					i.t.start(i.loading, Thread.PRIORITY_HIGH)		
+					
 				is_generation_loaded = true
 			else:
 				console.text += "GENERATION IS NOT DEAD!!! \n"
@@ -162,6 +174,7 @@ func start_genetic_procedure():
 					genetic_iter = 1
 					console.text += "GENETIC PROCESS IS STARTING..." + "GENETIC ITERATIONS SAVED: " + str(genetic_iterations_saved) + "\n"
 					load_gen_button.disabled = true
+					stopButton.disabled = false
 					start_living_process()
 				else:
 					console.text += "GENERATION IS NOT DEAD!!! \n"
@@ -171,12 +184,19 @@ func start_genetic_procedure():
 
 func start_living_process():
 	console.text += "LIVING PROCESS IS STARTING... \n"
-	await get_tree().create_timer(1.25).timeout
 	is_living_process_started = true
+	await get_tree().create_timer(gen_population * 0.15 / 2 ).timeout
+	
+	for i in players:
+		if  i.t != null:
+			if i.t.is_started() == true:
+				i.t.wait_to_finish()
+				await i.t
+				
+	await get_tree().create_timer(gen_population * 0.15 / 2 ).timeout
 	for i in players:
 		i.reward = 0
 		i.position = i.respawnPosition
-		i.t = Thread.new()
 		i.is_dead = false
 		i.t.start(i.life, Thread.PRIORITY_HIGH)
 
@@ -214,7 +234,7 @@ func find_the_best_player_and_generate_population():
 			players[index].moves.pop_back()
 		index += 1
 
-
+	
 	'''
 	print("NEW POPULATION IS: ")
 	for i in players:
@@ -259,6 +279,7 @@ func learn():
 					genetic_iterations_saved = 0
 					start_genetic_algorithm.disabled = false
 					load_gen_button.disabled = false
+					stopButton.disabled = true
 		await get_tree().create_timer(0.01).timeout
 
 
@@ -276,6 +297,15 @@ func set_player_configuration(p, i):
 
 func _ready():
 	if FileAccess.file_exists(path_to_conf):
+		var output = []
+		var output2 = []
+		OS.execute("wmic", ["cpu", "get", "NumberOfLogicalProcessors"],output)
+		var text = output[0].split("\n")
+
+		OS.execute("wmic", ["cpu", "get", "NumberOfCores"],output2)
+		var text2 = output2[0].split("\n")
+
+		#gen_population = int(text[1]) * int(text2[1]) + 80
 		var conf = FileAccess.open(path_to_conf, FileAccess.WRITE)
 		var line = "GENERATION_POPULATION " + str(gen_population)
 		var line2 = "LAST_GENERATION " + str(gen_last)
@@ -291,12 +321,13 @@ func _ready():
 		while FileAccess.file_exists(path_to_genetic + "gen" + str(counter) + ".txt"):
 			dir.remove(path_to_genetic + "gen" + str(counter) + ".txt")
 			counter += 1
-
+	
 	for i in range(0, gen_population):
 		var p = preload("res://Scenes/player.tscn").instantiate()
 		get_parent().call_deferred("add_child",p)
 		set_player_configuration(p,i)
-	var t = Thread.new()
+		p.t = Thread.new()
+	t = Thread.new()
 	t.start(call,Thread.PRIORITY_HIGH)
 	
 func _process(_delta):

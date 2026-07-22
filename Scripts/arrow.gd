@@ -6,10 +6,10 @@ var current_distance_travel = 0
 
 func _process(delta):
 	if get_parent().get_parent().get_node("GeneticAlgorithm").is_generation_dead == false:
-		self.position.x -= 1
-		current_distance_travel +=  1
+		self.position.x -= 0.55
+		current_distance_travel +=  0.55
 		
-		if current_distance_travel == 300:
+		if current_distance_travel >= 300:
 			current_distance_travel = 0
 			self.position.x = spawn_postion
 	else:

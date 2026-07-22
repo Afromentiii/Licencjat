@@ -331,6 +331,5 @@ show_behind_parent = true
 position = Vector2(0, -22)
 scale = Vector2(1, 1.45833)
 sprite_frames = SubResource("SpriteFrames_0avnl")
-frame = 8
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

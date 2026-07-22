@@ -10,5 +10,6 @@ func _process(_delta):
 		for i in get_node("GeneticAlgorithm").players:
 			if i.is_dead == false:
 				i.t.wait_to_finish()
+		get_node("GeneticAlgorithm").t.wait_to_finish()		
 		get_tree().change_scene_to_packed(load("res://GUI/Levels.tscn"))
 
