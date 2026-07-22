@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cuukwl6wtvr02"
-path="res://.godot/imported/laseremiter.png-a879321a42aa7737486013d49cc18cc4.ctex"
+uid="uid://dyt4jq6vkh6yu"
+path="res://.godot/imported/Trampolina.png-488faf4ffc0316a3370465d19b2292e9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scripts/laseremiter.png"
-dest_files=["res://.godot/imported/laseremiter.png-a879321a42aa7737486013d49cc18cc4.ctex"]
+source_file="res://Images/Trampolina.png"
+dest_files=["res://.godot/imported/Trampolina.png-488faf4ffc0316a3370465d19b2292e9.ctex"]
 
 [params]
 
