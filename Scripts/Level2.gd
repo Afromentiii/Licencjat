@@ -1,6 +1,6 @@
 extends Node2D
 
-@export var spawnPos = Vector2(-607.751,-4.086)
+@export var spawnPos = Vector2(-80,0)
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass
@@ -11,4 +11,3 @@ func _process(_delta):
 			if i.is_dead == false:
 				i.t.wait_to_finish()
 		get_tree().change_scene_to_packed(load("res://GUI/Levels.tscn"))
-

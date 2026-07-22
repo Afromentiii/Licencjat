@@ -12,7 +12,7 @@ extends Node2D
 @onready var gen_reward = $Control/MaxGenReward
 @onready var console = $Control/Console
 
-var is_generation_dead : bool = false
+var is_generation_dead : bool = true
 var is_generation_loaded: bool = false
 var is_button_just_pressed : bool = false
 var is_generate_button_just_pressed : bool = false
@@ -44,6 +44,7 @@ func overide_conf():
 	conf.close()
 
 func save_players_data(gen):
+	console.clear()
 	console.text += "SAVING DATA PROCESS... \n"
 	var generation = FileAccess.open(path_to_genetic + "gen" + str(gen) + ".txt", FileAccess.WRITE)
 	generation_counter += 1
@@ -65,7 +66,6 @@ func save_players_data(gen):
 func load_players_data(path):
 	var index = 0
 	if FileAccess.file_exists(path):
-		console.clear()
 		console.text += ("LOADING DATA PROCESS... \n")
 		var generation = FileAccess.open(path, FileAccess.READ)
 		while generation.eof_reached() == false:
@@ -77,8 +77,7 @@ func load_players_data(path):
 			if index < len(players):
 				players[index].reward = int(splited_line[0])
 				index += 1
-		for i in players:
-			console.text += ("Player id is: " + str(i.playerID)+ " Reward is: " + str(i.reward) + " Executed moves are: " + str(i.moves) + "\n")
+				
 		generation.close()
 	else:
 		console.text += "FILE DOES NOT EXIST!!! \n"
@@ -98,10 +97,13 @@ func load_generation_procedure():
 		if FileAccess.file_exists(path):
 			is_population_dead()
 			if is_generation_dead == true:
+				load_gen_button.disabled = true
 				is_generation_dead = false
 				console.clear()
 				load_players_data(path)
-				await get_tree().create_timer(0.1).timeout
+				for i in players:
+					console.text += ("Player id is: " + str(i.playerID)+ " Reward is: " + str(i.reward) + " Executed moves are: " + str(i.moves) + "\n")
+				await get_tree().create_timer(0.75).timeout
 				for i in players:
 					i.position = i.respawnPosition
 					i.t = Thread.new()
@@ -121,6 +123,7 @@ func generate_first_gen_procedure():
 		else:
 			is_population_dead()
 			if is_generation_dead == true:
+				generate_first_gen.disabled = true
 				is_generation_dead = false
 				if is_living_process_started == false:
 					start_living_process()
@@ -147,6 +150,7 @@ func start_genetic_procedure():
 			if genetic_iterations > 0:
 				is_population_dead()
 				if is_generation_dead == true:
+					start_genetic_algorithm.disabled = true
 					console.clear()
 					find_the_best_player_and_generate_population()
 					is_genetic_started = true
@@ -157,6 +161,7 @@ func start_genetic_procedure():
 					overide_conf()
 					genetic_iter = 1
 					console.text += "GENETIC PROCESS IS STARTING..." + "GENETIC ITERATIONS SAVED: " + str(genetic_iterations_saved) + "\n"
+					load_gen_button.disabled = true
 					start_living_process()
 				else:
 					console.text += "GENERATION IS NOT DEAD!!! \n"
@@ -166,9 +171,10 @@ func start_genetic_procedure():
 
 func start_living_process():
 	console.text += "LIVING PROCESS IS STARTING... \n"
-	await get_tree().create_timer(0.5).timeout
+	await get_tree().create_timer(1.25).timeout
 	is_living_process_started = true
 	for i in players:
+		i.reward = 0
 		i.position = i.respawnPosition
 		i.t = Thread.new()
 		i.is_dead = false
@@ -195,8 +201,6 @@ func find_the_best_player_and_generate_population():
 	var steps = gen_population / 2
 	var index = 0
 	var best_players_move_array = players[0].moves
-	var best_players_move_array2 = players[1].moves
-
 
 	for i in range(0, steps):
 		players[index].moves  = players[i].moves.duplicate()
@@ -228,6 +232,9 @@ func learn():
 		
 		is_population_dead()
 		if is_generation_dead == true:
+			if is_generation_loaded == true:
+				load_gen_button.disabled = false
+				is_generation_loaded = false
 			if is_saving == true:
 				save_players_data(gen_last)
 				await get_tree().create_timer(0.5).timeout
@@ -243,7 +250,6 @@ func learn():
 					gen_last += 1
 					overide_conf()
 					is_saving = true
-					console.clear()
 					genetic_iter += 1
 					
 				else:
@@ -251,6 +257,8 @@ func learn():
 					genetic_iter = 0
 					is_genetic_started = false
 					genetic_iterations_saved = 0
+					start_genetic_algorithm.disabled = false
+					load_gen_button.disabled = false
 		await get_tree().create_timer(0.01).timeout
 
 
